@@ -1,0 +1,19 @@
+﻿@model ArticlesApp.Models.Tag
+
+@{
+    ViewBag.Title = "Editare tag";
+}
+
+<h2>@ViewBag.Title</h2>
+
+@using (Html.BeginForm(controllerName: "Tags", actionName: "Edit", method: FormMethod.Post, routeValues: new { id = Model.Id }))
+{
+    @Html.Label("TagName", "Nume tag")
+    <br />
+    @Html.Editor("TagName")
+
+    @Html.ValidationMessageFor(m => m.TagName, null, new { @class = "text-danger" })
+    <br /> <br />
+
+    <button class="btn btn-success" type="submit">Modifica tag-ul</button>
+}

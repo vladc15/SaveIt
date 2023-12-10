@@ -1,0 +1,18 @@
+﻿model ArticlesApp.Models.Tag
+@{
+    ViewBag.Title = "Afisare tag";
+}
+
+<h2>@ViewBag.Title</h2>
+<br />
+
+<p>@Model.TagName</p>
+
+<form method="post" action="/Tags/Delete/@Model.Id">
+    <button class="btn btn-danger" type="submit">Sterge tag-ul</button>
+</form>
+<br />
+<a class="btn alert-success" href="/Tags/Index/">Afisare lista tag-urilor</a>
+<br />
+<hr />
+<br />

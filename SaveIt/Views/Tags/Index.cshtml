@@ -1,0 +1,30 @@
+﻿@{
+    ViewBag.Title = "Lista Tag-uri";
+}
+<br />
+
+<h2 class="text-center"> @ViewBag.Title </h2>
+<br />
+
+@if (TempData.ContainsKey("message"))
+{
+    <h1>@ViewBag.message</h1>
+}
+<br />
+
+<div class="align-items-center justify-content-center d-flex">
+    <a class="btn btn-success" href="/Tags/New">Adauga un nou tag</a>
+</div>
+<br />
+
+@foreach (var tag in ViewBag.Tags)
+{
+    @Html.Label("TagName", "Denumire tag")
+    <p>@tag.TagName</p>
+    <a class="btn alert-success" href="/Tags/Show/@tag.Id">Afisare tag</a>
+    <a class="btn alert-success" href="/Tags/Edit/@tag.Id">Editare tag</a>
+    <br />
+    <hr />
+    <br />
+}
+<br />
