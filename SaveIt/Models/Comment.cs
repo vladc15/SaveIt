@@ -18,8 +18,11 @@ namespace SaveIt.Models
         //public virtual ApplicationUser? User { get; set; }
 
         public int? PinId { get; set; }
-
+    
         public virtual Pin? Pin { get; set; }
+        
+        public int? BoardId { get; set; }
 
+        public virtual Board? Board { get; set; }
     }
 }

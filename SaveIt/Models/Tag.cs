@@ -10,6 +10,6 @@ namespace SaveIt.Models
         [Required(ErrorMessage = "Introduceti un nume!")]
         public string TagName { get; set; }
 
-        public virtual ICollection<Pin>? Pins { get; set; }
+        public virtual ICollection<PinTag>? PinTags { get; set; }
     }
 }

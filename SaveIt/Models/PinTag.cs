@@ -11,7 +11,5 @@ namespace SaveIt.Models
 
         public virtual Pin? Pin { get; set; }
         public virtual Tag? Tag { get; set; }
-
-        public DateTime Date { get; set; }
     }
 }

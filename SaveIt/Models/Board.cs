@@ -18,6 +18,6 @@ namespace SaveIt.Models
         public virtual ICollection<Comment>? Comments { get; set; }
 
         [NotMapped]
-        public IEnumerable<Board>? Boards { get; set; } 
+        public ICollection<PinBoard>? PinBoards { get; set; } 
     }
 }
