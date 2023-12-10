@@ -16,5 +16,6 @@ namespace SaveIt.Data
         public DbSet<Tag> Tags { get; set; }
         public DbSet<Comment> Comments { get; set; }
         public DbSet<PinBoard> PinBoards { get; set; }
+        public DbSet<PinTag> PinTags { get; set; }
     }
 }
