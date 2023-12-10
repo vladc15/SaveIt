@@ -1,0 +1,27 @@
+﻿@model SaveIt.Models.Pin
+
+@{
+}
+
+
+<h2 class="text-center mt-5">Editare Pin <b>@Model.Title </b></h2>
+
+<br />
+
+<div class="contaier mt-5">
+    @using (Html.BeginForm(actionName: "Edit", controllerName: "Pins", method: FormMethod.Post))
+    {
+        @Html.Label("Title", "Titlu")
+        @Html.Editor("Title", new { @class = "form-control" })
+        @Html.ValidationMessage("Title", null, new { @class = "text-danger" })
+        <br /> <br />
+
+        @Html.Label("Content", "Text Pin")
+        @Html.Editor("Content", null, new { @class = "form-control"})
+        @Html.ValidationMessage("Content", null, new { @class = "text-danger" })
+        <br /> <br />
+
+        <button class="btn btn-success" type="submit">Editeaza Pin</button>
+
+    }
+</div>

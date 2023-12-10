@@ -101,7 +101,7 @@ namespace SaveIt.Controllers
         
         public IActionResult Edit(int id)
         {
-            Pin pin = db.Pins.Include("Category").Where(art => art.Id == id).First();
+            Pin pin = db.Pins.Where(art => art.Id == id).First();
             //pin.Tags = GetAllTags();
 
             return View(pin);
@@ -127,6 +127,14 @@ namespace SaveIt.Controllers
             }
         }
 
+        //[HttpPost]
+        public IActionResult Delete(int id)
+        {
+            var pin = db.Pins.Find(id);
+            db.Pins.Remove(pin);
+            db.SaveChanges();
+            return RedirectToAction("Index");
+        }
 
     }
 }
