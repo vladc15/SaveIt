@@ -18,7 +18,9 @@ namespace SaveIt.Controllers
 
         public IActionResult Index()
         {
-            var pins = db.Pins.Include("Tag");
+            var pins = from pin in db.Pins
+                       orderby pin.Title
+                       select pin;//Include("Tag");
             ViewBag.Pins = pins;
             
             if (TempData.ContainsKey("message"))
@@ -31,7 +33,7 @@ namespace SaveIt.Controllers
 
         public IActionResult Show(int id)
         {
-            Pin pin = db.Pins.Include("Tags").Include("Comments").Where(p => p.Id == id).First();
+            Pin pin = db.Pins.Include("Comments").Where(p => p.Id == id).First();
             return View(pin);
         }
 
@@ -48,7 +50,7 @@ namespace SaveIt.Controllers
             }
             else
             {
-                Pin pin = db.Pins.Include("Tags").Include("Comments").Where(p => p.Id == comment.PinId).First();
+                Pin pin = db.Pins.Include("Comments").Where(p => p.Id == comment.PinId).First();
                 return View(pin);
             }
         }
@@ -73,7 +75,7 @@ namespace SaveIt.Controllers
         public IActionResult New()
         {
             Pin pin = new Pin();
-            pin.Tags = GetAllTags();
+            //pin.Tags = GetAllTags();
             return View(pin);
         }
 
@@ -92,7 +94,7 @@ namespace SaveIt.Controllers
             }
             else
             {
-                pin.Tags = GetAllTags();
+                //pin.Tags = GetAllTags();
                 return View(pin);
             }
         }
@@ -100,7 +102,7 @@ namespace SaveIt.Controllers
         public IActionResult Edit(int id)
         {
             Pin pin = db.Pins.Include("Category").Where(art => art.Id == id).First();
-            pin.Tags = GetAllTags();
+            //pin.Tags = GetAllTags();
 
             return View(pin);
         }
@@ -112,8 +114,7 @@ namespace SaveIt.Controllers
             {
                 Pin pin = db.Pins.Find(id);
                 pin.Title = requestPin.Title;
-                pin.Description = requestPin.Description;
-                pin.TagId = requestPin.TagId;
+                pin.Content = requestPin.Content;
                 db.SaveChanges();
                 TempData["message"] = "Pin-ul a fost modificat!";
                 TempData["messageType"] = "alert-success";
@@ -121,9 +122,11 @@ namespace SaveIt.Controllers
             }
             else
             {
-                requestPin.Tags = GetAllTags();
+                //requestPin.Tags = GetAllTags();
                 return View();
             }
         }
+
+
     }
 }
