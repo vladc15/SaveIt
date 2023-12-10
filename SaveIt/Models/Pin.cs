@@ -23,7 +23,7 @@ namespace SaveIt.Models
 
         public DateTime? Date { get; set; }
 
-        [Required(ErrorMessage = "Alegeti un board!")]
+        //[Required(ErrorMessage = "Alegeti un board!")]
         public virtual ICollection<PinTag>? PinTags { get; set; }
 
         public string? UserId { get; set; }
