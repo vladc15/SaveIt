@@ -1,0 +1,28 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+<div class="d-flex justify-content-center">
+
+    <a class="btn btn-outline-success" href="/Pins/Index/">Afisare Pin-uri</a>
+
+    <a class="btn btn-outline-success" href="/Pins/New">Adauga Pin</a>
+
+</div>
+
+<br />
+
+<div class="card-body">
+
+    <h3 class="card-title alert-success py-3 px-3 rounded-2">@Model.Title</h3>
+
+    <div class="card-text">@Model.Content</div>
+
+    <div class="d-flex justify-content-between flex-row mt-5">
+
+        <span class="alert-success">@Model.Date</span>
+
+    </div>
+
+</div>
