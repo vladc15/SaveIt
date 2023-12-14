@@ -14,6 +14,22 @@ namespace SaveIt.Controllers
         }
 
         [HttpPost]
+        public IActionResult New(Comment comment)
+        {
+            comment.Date = DateTime.Now;
+            if (ModelState.IsValid)
+            {
+                db.Comments.Add(comment);
+                db.SaveChanges();
+                return Redirect("/Pins/Show/" + comment.PinId);
+            }
+            else
+            {
+                return Redirect("/Pins/Show/" + comment.PinId);
+            }
+        }
+
+        [HttpPost]
         public IActionResult Delete(int id)
         {
             Comment comment = db.Comments.Find(id);
@@ -25,7 +41,8 @@ namespace SaveIt.Controllers
         public IActionResult Edit(int id)
         {
             Comment comment = db.Comments.Find(id);
-            return View(comment);
+            ViewBag.Comment = comment;
+            return View();
         }
 
         [HttpPost]
@@ -40,7 +57,7 @@ namespace SaveIt.Controllers
             }
             else
             {
-                return View(comment);
+                return Redirect("/Pins/Show/" + comment.PinId);
             }
         }
 

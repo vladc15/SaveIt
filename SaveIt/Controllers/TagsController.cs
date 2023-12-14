@@ -46,7 +46,7 @@ namespace SaveIt.Controllers
             {
                 db.Tags.Add(tag);
                 db.SaveChanges();
-                TempData["message"] = "Tagul a fost adaugat!";
+                TempData["message"] = "Tag-ul a fost adaugat!";
                 TempData["messageType"] = "alert-success";
                 return RedirectToAction("Index");
             }
@@ -68,13 +68,8 @@ namespace SaveIt.Controllers
             if (ModelState.IsValid)
             {
                 // vreau sa editez un tag si toate elementele din PinTags care au TagId == id
-                foreach (PinTag pinTag in db.PinTags)
-                {
-                    if (pinTag.Id == id)
-                    {
-                        pinTag.TagId = requestTag.Id;
-                    }
-                }
+                //foreach (PinTag pinTag in db.PinTags)
+                
                 Tag tag = db.Tags.Find(id);
                 tag.TagName = requestTag.TagName;
                 db.SaveChanges();
@@ -95,16 +90,18 @@ namespace SaveIt.Controllers
             // vreau sa sterg un tag si toate elementele din PinTags care au TagId == id
             foreach (PinTag pinTag in db.PinTags)
             {
-                if (pinTag.Id == id)
+                if (pinTag.TagId == id)
                 {
                     db.PinTags.Remove(pinTag);
+                    db.Pins.Remove(db.Pins.Find(pinTag.PinId));
+                    db.SaveChanges();
                 }
             }
             Tag tag = db.Tags.Find(id);
             db.Tags.Remove(tag);
             
             db.SaveChanges();
-            TempData["message"] = "Tagul a fost sters!";
+            TempData["message"] = "Tag-ul a fost sters!";
             TempData["messageType"] = "alert-danger";
             return RedirectToAction("Index");
         }

@@ -10,21 +10,23 @@
 {
     <h1>@ViewBag.message</h1>
 }
-<br />
 
-<div class="align-items-center justify-content-center d-flex">
-    <a class="btn btn-success" href="/Tags/New">Adauga un nou tag</a>
-</div>
-<br />
+<a class="btn btn-success" href="/Pins/Index">Inapoi la Pin-uri</a>
+
+<br /> <br />
 
 @foreach (var tag in ViewBag.Tags)
 {
-    @Html.Label("TagName", "Denumire tag")
+    @Html.Label("TagName", "Denumire Tag")
     <p>@tag.TagName</p>
-    <a class="btn alert-success" href="/Tags/Show/@tag.Id">Afisare tag</a>
-    <a class="btn alert-success" href="/Tags/Edit/@tag.Id">Editare tag</a>
+    <a class="btn alert-success" href="/Tags/Show/@tag.Id">Afisare Tag</a>
+    <a class="btn alert-success" href="/Tags/Edit/@tag.Id">Editare Tag</a>
     <br />
     <hr />
     <br />
 }
+<br />
+<div class="align-items-center justify-content-center d-flex">
+    <a class="btn btn-success" href="/Tags/New">Adauga un nou tag</a>
+</div>
 <br />

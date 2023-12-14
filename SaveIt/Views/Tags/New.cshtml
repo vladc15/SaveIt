@@ -1,19 +1,20 @@
 ﻿@model SaveIt.Models.Tag
 
 @{
-    ViewBag.Title = "Adauga tag";
+    ViewBag.Title = "Adauga Tag";
 }
 
 <h2>Adauga tag</h2>
 
 @using (Html.BeginForm(actionName: "New", controllerName: "Tags", method: FormMethod.Post))
 {
-    @Html.Label("TagName", "Nume tag")
+    @Html.Label("TagName", "Nume Tag")
     <br />
     @Html.TextBox("TagName", null, new {@class = "form-control"})
+    <br /> <br />
 
     @Html.ValidationMessageFor(m => m.TagName, "", new {@class = "text-danger"})
     <br /> <br />
 
-    <button class="btn btn-success" type="submit">Adauga tag</button>
+    <button class="btn btn-success" type="submit">Adauga Tag</button>
 }

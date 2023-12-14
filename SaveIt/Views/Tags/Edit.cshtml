@@ -1,7 +1,7 @@
 ﻿@model SaveIt.Models.Tag
 
 @{
-    ViewBag.Title = "Editare tag";
+    ViewBag.Title = "Editare Tag";
 }
 
 <h2>@ViewBag.Title</h2>
@@ -11,9 +11,10 @@
     @Html.Label("TagName", "Nume tag")
     <br />
     @Html.Editor("TagName")
+    <br /> <br />
 
     @Html.ValidationMessageFor(m => m.TagName, null, new { @class = "text-danger" })
     <br /> <br />
 
-    <button class="btn btn-success" type="submit">Modifica tag-ul</button>
+    <button class="btn btn-success" type="submit">Modifica Tag-ul</button>
 }

@@ -1,6 +1,6 @@
 ﻿@model SaveIt.Models.Tag
 @{
-    ViewBag.Title = "Afisare tag";
+    ViewBag.Title = "Afisare Tag";
 }
 
 <h2>@ViewBag.Title</h2>
@@ -9,10 +9,10 @@
 <p>@Model.TagName</p>
 
 <form method="post" action="/Tags/Delete/@Model.Id">
-    <button class="btn btn-danger" type="submit">Sterge tag-ul</button>
+    <button class="btn btn-danger" type="submit">Sterge Tag-ul</button>
 </form>
 <br />
-<a class="btn alert-success" href="/Tags/Index/">Afisare lista tag-urilor</a>
+<a class="btn alert-success" href="/Tags/Index/">Afisare lista Tag-urilor</a>
 <br />
 <hr />
 <br />
