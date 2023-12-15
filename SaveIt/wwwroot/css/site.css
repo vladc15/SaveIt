@@ -1,4 +1,4 @@
-html {
+﻿html {
   font-size: 14px;
 }
 
@@ -46,3 +46,28 @@ a.nav-link:hover {
 .logoutbtn:hover {
     color: #00b894 !important;
 }
+
+#multiple-select-field + .select2-container--bootstrap5 .select2-selection--multiple .select2-selection__choice {
+    background-color: #28a745 !important; /* Albastru pentru elementele selectate */
+    color: white !important;
+}
+
+#multiple-select-field + .select2-container--bootstrap5 .select2-results__option:hover:not(.select2-results__option--selected) {
+    background-color: grey !important; /* Gri pentru opțiunile hover care nu sunt selectate */
+}
+
+#multiple-select-field + .select2-container--bootstrap5 .select2-results__option.select2-results__option--selected:hover {
+    background-color: #28a745 !important; /* Albastru pentru opțiunile deja selectate atunci când se face hover */
+    color: white !important;
+}
+
+#multiple-select-field + .select2-container--bootstrap5 .select2-results__option.select2-results__option--selected {
+    background-color: #28a745 !important; /* Albastru pentru opțiunile deja selectate */
+    color: white !important;
+}
+
+/* Opțiunile care nu sunt selectate */
+#multiple-select-field + .select2-container--bootstrap5 .select2-results__option:not(.select2-results__option--selected) {
+    background-color: white !important; /* Fond alb pentru opțiunile care nu sunt selectate */
+}
+

@@ -23,20 +23,27 @@
                 @Html.ValidationMessage("Content", null, new { @class = "text-danger" })
                 <br /> <br />
 
-                <label>Selectati Tag-urile</label>
+                //<label>Selectati Tag-urile</label>
                 //@Html.DropDownListFor(m => m.TagId, new SelectList(Model.Tags, "Value", "Text"), "Selectati Tag-ul", new { @class = "form-control" })
                 //@Html.ValidationMessageFor(m => m.TagId, null, new { @class = "text-danger" })
                 //<br /> <br />
 
-                <label>Selectati Tag-urile</label>
+                /*<label>Selectati Tag-urile</label>
                 @Html.ListBoxFor(m => m.TagIds, new SelectList(Model.Tags, "Value", "Text"), new { @class = "form-control" })
                 @Html.ValidationMessageFor(m => m.TagIds, null, new { @class = "text-danger" })
-                <br /> <br />
+                <br /> <br />*/
 
                 //<label>Selectati Tag-urile</label>
                 //@Html.ListBoxFor(m => m.TagId, new SelectList(Model.Tags, "Value", "Text"), new { @class = "form-control" })
                 //@Html.ValidationMessageFor(m => m.TagId, null, new { @class = "text-danger" })
                 //<br /> <br />
+
+                <label>Selectati Tag-urile</label>
+                @Html.DropDownListFor(m => m.TagIds, new SelectList(Model.Tags, "Value", "Text"), "Selectati Tag-ul", new { @class = "form-select", multiple="multiple", id="multiple-select-field", data_placeholder="Alege Tag-urile" })
+                @Html.ValidationMessageFor(m => m.TagIds, null, new { @class = "text-danger" })
+                <br /> <br />
+
+
 
                 <button class="btn btn-success" type="submit">Creeaza Pin</button>        
 
