@@ -7,7 +7,7 @@
 <h2>Editare comentariu</h2>
 <br />
 
-@using (Html.BeginForm(controllerName: "Comments", actionName: "Edit", method: FormMethod.Post, routeValues: new { id = Model.Id}))
+@using (Html.BeginForm(controllerName: "Comments", actionName: "Edit", method: FormMethod.Post))
 {
     @Html.Label("Content", "Continut comentariu")
     <br />
