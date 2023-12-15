@@ -25,6 +25,9 @@ namespace SaveIt.Models
 
         public virtual ICollection<PinTag>? PinTags { get; set; }
 
+        [NotMapped]
+        public List<int>? TagIds { get; set; }
+
         public string? UserId { get; set; }
 
         //public virtual ApplicationUser? User { get; set; }

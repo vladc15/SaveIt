@@ -1,30 +1,121 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model SaveIt.Models.Pin
 @{
 }
 <div class="d-flex justify-content-center">
-
     <a class="btn btn-outline-success" href="/Pins/Index/">Afisare Pin-uri</a>
 
     <a class="btn btn-outline-success" href="/Pins/New">Adauga Pin</a>
-    <a class="btn btn-outline-success" href="/Pins/Edit/@Model.Id"> Editeaza Pin @Model.Title</a>
-    <a class="btn btn-outline-danger" href="/Pins/Delete/@Model.Id"> Sterge Pin @Model.Title</a>
-
 </div>
 
 <br />
 
-<div class="card-body">
+<div class="card">
 
-    <h3 class="card-title alert-success py-3 px-3 rounded-2">@Model.Title</h3>
+    <div class="card-body">
+        <h3 class="card-title alert-success py-3 px-3 rounded-2">@Model.Title</h3>
 
-    <div class="card-text">@Model.Content</div>
+        <div class="card-text">@Model.Content</div>
 
-    <div class="d-flex justify-content-between flex-row mt-5">
+        <div class="d-flex justify-content-between flex-row mt-5">
 
-        <span class="alert-success">@Model.Date</span>
+            @*
+            <div>
+            <i class="bi bi-globe"></i>
+            @Model.Tags.TagName
+            </div>
+            *@
+            @foreach (var pintag in Model.PinTags)
+            {
+                <div>
+                    <i class="bi bi-globe"></i>
+                    @pintag.Tag.TagName
+                </div>
+            }
+
+            <span class="alert-success">@Model.Date</span>
+        </div>
+    </div>
+
+    <hr />
+
+    <div class="d-flex flex-row justify-content-between">
+
+        <a class="btn btn-success" href="/Pins/Edit/@Model.Id">Editeaza Pin</a>
+
+        <form method="post" action="/Pins/Delete/@Model.Id">
+
+            <button class="btn btn-danger" type="submit">Sterge Pin</button>
+
+        </form>
 
     </div>
 
+
+</div>
+<br /> <br />
+
+@*afisare comentarii*@
+
+@foreach (var comm in Model.Comments)
+{
+    <div class="container">
+        <div class="row">
+            <div class="col-md-2"></div>
+            <div class="col-md-8">
+                <div>
+                    <p>@comm.Content</p>
+                    <small>@comm.Date</small>
+                </div>
+                <br>
+
+                <div class="d-flex">
+                    <div>
+                        <a class="btn btn-outline-primary" href="/Comments/Edit/@comm.Id"><i class="bi bi-pencil-square"></i>Editeaza</a>
+                    </div>
+
+                    <div>
+                        <form method="post" action="/Comments/Delete/@comm.Id">
+                            <button class="btn btn-outline-danger" type="submit"><i class="bi bi-trash"></i>Sterge</button>
+                        </form>
+                    </div>
+                </div>
+                <br />
+            </div>
+
+            <div class="col-md-2"></div>
+        </div>
+    </div>
+}
+
+
+@*afisare form in care se poate adauga un comentariu*@
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-2"></div>
+        <div class="col-md-8">
+            <div class="card">
+                <form method="post" action="/Pins/Show/@Model.Id">
+
+                    <div class="card-body">
+
+                        <input type="hidden" name="PinId" value="@Model.Id" />
+
+                        <label>Continut comentariu</label>
+                        <br />
+
+                        <textarea class="form-control" name="Content"></textarea>
+                        <br />
+
+                        @Html.ValidationMessage("Content", null, new { @class = "text-danger"})
+
+                        <button class="btn btn-success " type="submit">Adauga comentariul</button>
+
+                    </div>
+
+                </form>
+            </div>
+        </div>
+        <div class="col-md-2"></div>
+    </div>
 </div>

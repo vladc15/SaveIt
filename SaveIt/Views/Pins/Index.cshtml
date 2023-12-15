@@ -1,10 +1,24 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿
 @{
 }
 
-<h2 class="text-center">Afisare Pin-uri</h2>
+<h2 class="text-center">Afisare Pin-uri</h2> <br />
+
+@if (ViewBag.Message != null)
+{
+    <h2 class="alert-success p-3 rounded-3 text-center mb-5">@ViewBag.Message</h2>
+}
+
+<div class="d-flex justify-content-center">
+    <a class="btn btn-outline-success" href="/Tags/Index/">Afisare Tag-uri</a>
+    <br />
+    <a class="btn btn-outline-success" href="/Pins/New">Adauga Pin</a>
+    <br />
+</div>
+<br />
+
+
+
 @foreach (var pin in ViewBag.Pins)
 {
     <div class="card-body">
@@ -17,9 +31,25 @@
 
             <a class="btn btn-success" href="/Pins/Show/@pin.Id">Afisare Pin</a>
 
+            @*
+            <div>
+                <i class="bi bi-globe"></i>
+                @pin.Tag.TagName
+            </div>
+            *@
+            @foreach (var pintag in pin.PinTags)
+            {
+                <div>
+                    <i class="bi bi-globe"></i>
+                    @pintag.Tag.TagName
+                </div>
+            }
+
+
             <span class="alert-success">@pin.Date</span>
 
         </div>
 
     </div>
+    <br /> <br />
 }

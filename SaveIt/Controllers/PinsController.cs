@@ -18,9 +18,8 @@ namespace SaveIt.Controllers
 
         public IActionResult Index()
         {
-            var pins = from pin in db.Pins
-                       orderby pin.Title
-                       select pin;//Include("Tag");
+            //var pins = db.Pins.Include("PinTags.Tag");
+            var pins = db.Pins.Include(p => p.PinTags).ThenInclude(pt => pt.Tag);
             ViewBag.Pins = pins;
             
             if (TempData.ContainsKey("message"))
@@ -33,7 +32,8 @@ namespace SaveIt.Controllers
 
         public IActionResult Show(int id)
         {
-            Pin pin = db.Pins.Include("Comments").Where(p => p.Id == id).First();
+            //Pin pin = db.Pins.Include("PinTags.Tag").Include("Comments").Where(p => p.Id == id).First();
+            Pin pin = db.Pins.Include(p => p.PinTags).ThenInclude(pt => pt.Tag).Include(p => p.Comments).FirstOrDefault(p => p.Id == id);
             return View(pin);
         }
 
@@ -50,7 +50,8 @@ namespace SaveIt.Controllers
             }
             else
             {
-                Pin pin = db.Pins.Include("Comments").Where(p => p.Id == comment.PinId).First();
+                //Pin pin = db.Pins.Include("PinTags.Tag").Include("Comments").Where(p => p.Id == comment.PinId).First();
+                Pin pin = db.Pins.Include(p => p.PinTags).ThenInclude(pt => pt.Tag).Include(p => p.Comments).FirstOrDefault(p => p.Id == comment.PinId);
                 return View(pin);
             }
         }
@@ -75,18 +76,29 @@ namespace SaveIt.Controllers
         public IActionResult New()
         {
             Pin pin = new Pin();
-            //pin.Tags = GetAllTags();
+            pin.Tags = GetAllTags();
             return View(pin);
         }
 
         [HttpPost]
         public IActionResult New(Pin pin)
         {
-            pin.Date = System.DateTime.Now;
+            pin.Date = DateTime.Now;
+            pin.Tags = GetAllTags();
             //pin.UserId = _userManager.GetUserId();
             if (ModelState.IsValid)
             {
                 db.Pins.Add(pin);
+                db.SaveChanges();
+                foreach (var tagId in pin.TagIds)
+                {
+                    PinTag pinTag = new PinTag
+                    {
+                        PinId = pin.Id,
+                        TagId = tagId
+                    };
+                    db.PinTags.Add(pinTag);
+                }
                 db.SaveChanges();
                 TempData["message"] = "Pin-ul a fost adaugat!";
                 TempData["messageType"] = "alert-success";
@@ -94,15 +106,15 @@ namespace SaveIt.Controllers
             }
             else
             {
-                //pin.Tags = GetAllTags();
                 return View(pin);
             }
         }
         
         public IActionResult Edit(int id)
         {
-            Pin pin = db.Pins.Where(art => art.Id == id).First();
-            //pin.Tags = GetAllTags();
+            //Pin pin = db.Pins.Include("PinTags.Tag").Where(art => art.Id == id).First();
+            Pin pin = db.Pins.Include(p => p.PinTags).ThenInclude(pt => pt.Tag).FirstOrDefault(p => p.Id == id);
+            pin.Tags = GetAllTags();
 
             return View(pin);
         }
@@ -112,9 +124,29 @@ namespace SaveIt.Controllers
         {
             if (ModelState.IsValid)
             {
-                Pin pin = db.Pins.Find(id);
+                Pin pin = db.Pins.Include(p => p.PinTags).Where(p => p.Id == id).First();
                 pin.Title = requestPin.Title;
                 pin.Content = requestPin.Content;
+                pin.Date = DateTime.Now;
+                // trebuie pus si tag-ul
+                //pin.Tags = GetAllTags();
+                // vreau ca lista de TagIds sa fie copiata de la requestPin
+                //pin.TagIds = requestPin.TagIds;
+                //pin.TagId = requestPin.TagId;
+                //pin.Tags = GetAllTags();
+                //pin.PinTags = requestPin.PinTags;
+                //db.Pins.Update(pin);
+                //db.SaveChanges();
+                pin.PinTags.Clear();
+                foreach (var tagId in requestPin.TagIds)
+                {
+                    PinTag pinTag = new PinTag
+                    {
+                        PinId = pin.Id,
+                        TagId = tagId
+                    };
+                    db.PinTags.Add(pinTag);
+                }
                 db.SaveChanges();
                 TempData["message"] = "Pin-ul a fost modificat!";
                 TempData["messageType"] = "alert-success";
@@ -122,17 +154,18 @@ namespace SaveIt.Controllers
             }
             else
             {
-                //requestPin.Tags = GetAllTags();
+                requestPin.Tags = GetAllTags();
                 return View();
             }
         }
 
-        //[HttpPost]
+        [HttpPost]
         public IActionResult Delete(int id)
         {
             var pin = db.Pins.Find(id);
             db.Pins.Remove(pin);
             db.SaveChanges();
+            TempData["message"] = "Pin-ul a fost sters!";
             return RedirectToAction("Index");
         }
 
