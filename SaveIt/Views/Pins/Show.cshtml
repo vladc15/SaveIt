@@ -13,7 +13,7 @@
 <div class="card">
 
     @Html.Partial("PinInfo", Model)
-    @if (Model.Likes.Count == 0)
+    @if (ViewBag.Liked == false)
     {
         <form method="post" action = "/Likes/AddLike/@Model.Id">
             <button type="submit">

@@ -45,6 +45,16 @@ namespace SaveIt.Controllers
 
             //Pin pin = db.Pins.Include("PinTags.Tag").Include("Comments").Where(p => p.Id == id).First();
             Pin pin = db.Pins.Include("User").Include(p => p.PinTags).ThenInclude(pt => pt.Tag).Include(p => p.Likes).Include(p => p.Comments).Include("Comments.User").FirstOrDefault(p => p.Id == id);
+            var usr = _userManager.GetUserId(User);
+            var likes = db.Likes.Where(l => l.PinId == id && usr == l.UserId).ToList();
+            if (likes.Count > 0)
+            {
+                ViewBag.Liked = true;
+            }
+            else
+            {
+                ViewBag.Liked = false;
+            }
             SetAccessRights();
             return View(pin);
         }
