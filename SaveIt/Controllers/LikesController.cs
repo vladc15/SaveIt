@@ -13,18 +13,27 @@ namespace SaveIt.Controllers
         {
             db = context;
         }
-        public IActionResult New(Like like)
+        [HttpPost]
+        public IActionResult AddLike(int id)
         {
-            if (ModelState.IsValid)
+            db.Add(new Like { PinId = id });
+            db.SaveChanges();
+            return Redirect("/Pins/Show/" + id);
+        }
+
+        [HttpPost]
+        public IActionResult DeleteLike(int id)
+        {
+            var likesToDelete = db.Likes.Where(l => l.PinId == id).ToList();
+
+            foreach (var like in likesToDelete)
             {
-                db.Likes.Add(like);
-                db.SaveChanges();
-                return Redirect("/Pins/Show/" + like.PinId);
+                db.Likes.Remove(like);
             }
-            else
-            {
-                return Redirect("/Pins/Show/" + like.PinId);
-            }
+
+            db.SaveChanges();
+
+            return Redirect("/Pins/Show/" + id);
         }
     }
 }

@@ -14,7 +14,7 @@
     @Html.Partial("PinInfo", Model)
     @if (Model.Likes.Count == 0)
     {
-        <form method="post" action = "/Pins/AddLike/@Model.Id">
+        <form method="post" action = "/Likes/AddLike/@Model.Id">
             <button type="submit">
                 <i class="bi bi-hand-thumbs-up"></i>
             </button>
@@ -22,7 +22,7 @@
     }
     else
     {
-        <form method="post" action="/Pins/DeleteLike/@Model.Id">
+        <form method="post" action="/Likes/DeleteLike/@Model.Id">
             <button type="submit">
                 <i class="bi bi-hand-thumbs-down"></i>
             </button>
