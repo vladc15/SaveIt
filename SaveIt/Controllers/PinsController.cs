@@ -28,7 +28,7 @@ namespace SaveIt.Controllers
         public IActionResult Index()
         {
             //var pins = db.Pins.Include("PinTags.Tag");
-            var pins = db.Pins.Include("User").Include(p => p.PinTags).ThenInclude(pt => pt.Tag).Include(p => p.Likes);
+            /*var pins = db.Pins.Include("User").Include(p => p.PinTags).ThenInclude(pt => pt.Tag).Include(p => p.Likes);
             ViewBag.Pins = pins;
             
             if (TempData.ContainsKey("message"))
@@ -36,6 +36,35 @@ namespace SaveIt.Controllers
                 ViewBag.Message = TempData["message"];
                 ViewBag.Alert = TempData["messageType"];
             }
+            return View();*/
+
+            int perPage = 5;
+
+            var pins = db.Pins.Include("User").Include(p => p.PinTags).ThenInclude(pt => pt.Tag).Include(p => p.Likes).OrderByDescending(p => p.Date);
+
+            if (TempData.ContainsKey("message"))
+            {
+                ViewBag.Message = TempData["message"];
+                ViewBag.Alert = TempData["messageType"];
+            }
+
+            var totalItems = pins.Count();
+
+            var currentPage = Convert.ToInt32(Request.Query["page"]);
+
+            var offset = 0;
+
+            if (!currentPage.Equals(0))
+            {
+                offset = (currentPage - 1) * perPage;
+            }
+
+            var paginatedPins = pins.Skip(offset).Take(perPage);
+
+            ViewBag.LastPage = Math.Ceiling((float)totalItems / (float)perPage);
+
+            ViewBag.Pins = paginatedPins;
+
             return View();
         }
 
