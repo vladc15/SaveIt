@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc.Rendering;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Diagnostics.Eventing.Reader;
 
 namespace SaveIt.Models
 {
@@ -33,6 +34,7 @@ namespace SaveIt.Models
         //public virtual ApplicationUser? User { get; set; }
 
         public virtual ICollection<Comment>? Comments { get; set; }
+        public virtual ICollection<Like>? Likes { get; set; }
 
         [NotMapped]
         public IEnumerable<SelectListItem>? Tags { get; set; }

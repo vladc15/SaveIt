@@ -17,6 +17,7 @@ namespace SaveIt.Data
         public DbSet<Comment> Comments { get; set; }
         public DbSet<PinBoard> PinBoards { get; set; }
         public DbSet<PinTag> PinTags { get; set; }
+        public DbSet<Like> Likes { get; set; }  
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -49,6 +50,13 @@ namespace SaveIt.Data
                 .HasOne(pt => pt.Tag)
                 .WithMany(pt => pt.PinTags)
                 .HasForeignKey(pt => pt.TagId);
+            modelBuilder.Entity<Like>()
+                .HasKey(l => new { l.Id, l.PinId });
+            modelBuilder.Entity<Like>()
+                .HasOne(l => l.Pin)
+                .WithMany(l => l.Likes)
+                .HasForeignKey(l => l.PinId);
+
         }
     }
 }

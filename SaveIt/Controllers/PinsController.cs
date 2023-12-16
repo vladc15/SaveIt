@@ -19,7 +19,7 @@ namespace SaveIt.Controllers
         public IActionResult Index()
         {
             //var pins = db.Pins.Include("PinTags.Tag");
-            var pins = db.Pins.Include(p => p.PinTags).ThenInclude(pt => pt.Tag);
+            var pins = db.Pins.Include(p => p.PinTags).ThenInclude(pt => pt.Tag).Include(p => p.Likes);
             ViewBag.Pins = pins;
             
             if (TempData.ContainsKey("message"))
@@ -32,8 +32,9 @@ namespace SaveIt.Controllers
 
         public IActionResult Show(int id)
         {
+
             //Pin pin = db.Pins.Include("PinTags.Tag").Include("Comments").Where(p => p.Id == id).First();
-            Pin pin = db.Pins.Include(p => p.PinTags).ThenInclude(pt => pt.Tag).Include(p => p.Comments).FirstOrDefault(p => p.Id == id);
+            Pin pin = db.Pins.Include(p => p.PinTags).ThenInclude(pt => pt.Tag).Include(p => p.Likes).Include(p => p.Comments).FirstOrDefault(p => p.Id == id);
             return View(pin);
         }
 
@@ -51,7 +52,24 @@ namespace SaveIt.Controllers
             else
             {
                 //Pin pin = db.Pins.Include("PinTags.Tag").Include("Comments").Where(p => p.Id == comment.PinId).First();
-                Pin pin = db.Pins.Include(p => p.PinTags).ThenInclude(pt => pt.Tag).Include(p => p.Comments).FirstOrDefault(p => p.Id == comment.PinId);
+                Pin pin = db.Pins.Include(p => p.PinTags).ThenInclude(pt => pt.Tag).Include(p => p.Likes).Include(p => p.Comments).FirstOrDefault(p => p.Id == comment.PinId);
+                return View(pin);
+            }
+        }
+
+        [HttpPost]
+        public IActionResult Show([FromForm] Like like)
+        {
+            if (ModelState.IsValid)
+            {
+                db.Likes.Add(like);
+                db.SaveChanges();
+                return Redirect("/Pins/Show/" + like.PinId);
+            }
+            else
+            {
+                //Pin pin = db.Pins.Include("PinTags.Tag").Include("Comments").Where(p => p.Id == comment.PinId).First();
+                Pin pin = db.Pins.Include(p => p.PinTags).ThenInclude(pt => pt.Tag).Include(p => p.Likes).Include(p => p.Comments).FirstOrDefault(p => p.Id == like.PinId);
                 return View(pin);
             }
         }
@@ -158,6 +176,7 @@ namespace SaveIt.Controllers
                 return View();
             }
         }
+       
 
         [HttpPost]
         public IActionResult Delete(int id)
@@ -167,6 +186,14 @@ namespace SaveIt.Controllers
             db.SaveChanges();
             TempData["message"] = "Pin-ul a fost sters!";
             return RedirectToAction("Index");
+        }
+
+        [HttpPost]
+        public IActionResult AddLike (int id)
+        {
+            db.Add(new Like { PinId = id });
+            db.SaveChanges();
+            return Redirect("/Pins/Show/" + id);
         }
 
     }

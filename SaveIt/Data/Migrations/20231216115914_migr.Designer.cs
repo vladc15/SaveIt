@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SaveIt.Data;
 
@@ -11,9 +12,10 @@ using SaveIt.Data;
 namespace SaveIt.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231216115914_migr")]
+    partial class migr
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -278,24 +280,6 @@ namespace SaveIt.Data.Migrations
                     b.ToTable("Comments");
                 });
 
-            modelBuilder.Entity("SaveIt.Models.Like", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<int>("PinId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id", "PinId");
-
-                    b.HasIndex("PinId");
-
-                    b.ToTable("Likes");
-                });
-
             modelBuilder.Entity("SaveIt.Models.Pin", b =>
                 {
                     b.Property<int>("Id")
@@ -460,17 +444,6 @@ namespace SaveIt.Data.Migrations
                     b.Navigation("Pin");
                 });
 
-            modelBuilder.Entity("SaveIt.Models.Like", b =>
-                {
-                    b.HasOne("SaveIt.Models.Pin", "Pin")
-                        .WithMany("Likes")
-                        .HasForeignKey("PinId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Pin");
-                });
-
             modelBuilder.Entity("SaveIt.Models.PinBoard", b =>
                 {
                     b.HasOne("SaveIt.Models.Board", "Board")
@@ -519,8 +492,6 @@ namespace SaveIt.Data.Migrations
             modelBuilder.Entity("SaveIt.Models.Pin", b =>
                 {
                     b.Navigation("Comments");
-
-                    b.Navigation("Likes");
 
                     b.Navigation("PinBoards");
 
