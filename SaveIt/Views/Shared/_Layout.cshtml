@@ -29,15 +29,25 @@
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
+
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Pins" asp-action="Index">Afisare Pin-uri</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Tags" asp-action="Index">Afisare Tag-uri</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Pins" asp-action="New">Adauga Pin</a>
-                        </li>
+
+                        @if (User.IsInRole("Admin"))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Tags" asp-action="Index">Afisare Tag-uri</a>
+                            </li>
+                        }
+
+                        @if (User.IsInRole("Admin") || User.IsInRole("User"))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Pins" asp-action="New">Adauga Pin</a>
+                            </li>
+                        }
+                        
                     </ul>
                     <partial name="_LoginPartial" />
                 </div>

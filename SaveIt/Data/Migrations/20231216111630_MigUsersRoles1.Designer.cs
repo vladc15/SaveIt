@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SaveIt.Data;
 
@@ -11,13 +12,14 @@ using SaveIt.Data;
 namespace SaveIt.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231216111630_MigUsersRoles1")]
+    partial class MigUsersRoles1
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "6.0.23")
+                .HasAnnotation("ProductVersion", "6.0.22")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
@@ -177,12 +179,6 @@ namespace SaveIt.Data.Migrations
 
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("bit");
-
-                    b.Property<string>("FirstName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("LastName")
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("LockoutEnabled")
                         .HasColumnType("bit");
@@ -448,7 +444,7 @@ namespace SaveIt.Data.Migrations
                         .HasForeignKey("PinId");
 
                     b.HasOne("SaveIt.Models.ApplicationUser", "User")
-                        .WithMany("Comments")
+                        .WithMany()
                         .HasForeignKey("UserId");
 
                     b.Navigation("Board");
@@ -461,7 +457,7 @@ namespace SaveIt.Data.Migrations
             modelBuilder.Entity("SaveIt.Models.Pin", b =>
                 {
                     b.HasOne("SaveIt.Models.ApplicationUser", "User")
-                        .WithMany("Pins")
+                        .WithMany()
                         .HasForeignKey("UserId");
 
                     b.Navigation("User");
@@ -503,13 +499,6 @@ namespace SaveIt.Data.Migrations
                     b.Navigation("Pin");
 
                     b.Navigation("Tag");
-                });
-
-            modelBuilder.Entity("SaveIt.Models.ApplicationUser", b =>
-                {
-                    b.Navigation("Comments");
-
-                    b.Navigation("Pins");
                 });
 
             modelBuilder.Entity("SaveIt.Models.Board", b =>

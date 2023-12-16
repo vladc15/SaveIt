@@ -1,17 +1,26 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SaveIt.Data;
 using SaveIt.Models;
 
 namespace SaveIt.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class TagsController : Controller
     {
         private readonly ApplicationDbContext db;
 
-        public TagsController(ApplicationDbContext context)
+        private readonly UserManager<ApplicationUser> _userManager;
+
+        private readonly RoleManager<IdentityRole> _roleManager;
+
+        public TagsController(ApplicationDbContext context, UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager)
         {
             db = context;
+            _userManager = userManager;
+            _roleManager = roleManager;
         }
 
         public IActionResult Index()
@@ -83,9 +92,33 @@ namespace SaveIt.Controllers
         [HttpPost]
         public IActionResult Delete(int id)
         {
-            Tag tag = db.Tags.Find(id);
+            Tag tag = db.Tags.Include(t => t.PinTags).ThenInclude(pt => pt.Pin).ThenInclude(p => p.Comments).FirstOrDefault(t => t.Id == id);
+
+            foreach (var pinTag in tag.PinTags)
+            {
+                foreach (var comment in pinTag.Pin.Comments)
+                {
+                    db.Comments.Remove(comment);
+                }
+            }
+
+            // vreau sa retin pin-urile care apar in tag.PinTags
+            var pins = tag.PinTags.Select(pt => pt.Pin).ToList();
+
+            // sterg pintag-urile care au tag-ul curent
+            foreach (var pinTag in tag.PinTags)
+            {
+                db.PinTags.Remove(pinTag);
+            }
+
+            // sterg pin-urile care au fost retinute
+            foreach (var pin in pins)
+            {
+                db.Pins.Remove(pin);
+            }
+
             db.Tags.Remove(tag);
-            
+
             db.SaveChanges();
             TempData["message"] = "Tag-ul a fost sters!";
             TempData["messageType"] = "alert-danger";

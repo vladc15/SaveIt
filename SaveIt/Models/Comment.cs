@@ -15,7 +15,7 @@ namespace SaveIt.Models
 
         public string? UserId { get; set; }
 
-        //public virtual ApplicationUser? User { get; set; }
+        public virtual ApplicationUser? User { get; set; }
 
         public int? PinId { get; set; }
     
