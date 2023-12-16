@@ -6,7 +6,7 @@ namespace SaveIt.Models
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
-        public int PinId { get; set; }
+        public int? PinId { get; set; }
         //public int UserId { get; set; }
 
         public virtual Pin? Pin { get; set; }
