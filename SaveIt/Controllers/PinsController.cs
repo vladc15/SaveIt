@@ -28,7 +28,7 @@ namespace SaveIt.Controllers
         public IActionResult Index()
         {
             //var pins = db.Pins.Include("PinTags.Tag");
-            var pins = db.Pins.Include("User").Include(p => p.PinTags).ThenInclude(pt => pt.Tag);
+            var pins = db.Pins.Include("User").Include(p => p.PinTags).ThenInclude(pt => pt.Tag).Include(p => p.Likes);
             ViewBag.Pins = pins;
             
             if (TempData.ContainsKey("message"))
@@ -42,8 +42,9 @@ namespace SaveIt.Controllers
         [Authorize(Roles = "User,Admin")]
         public IActionResult Show(int id)
         {
+
             //Pin pin = db.Pins.Include("PinTags.Tag").Include("Comments").Where(p => p.Id == id).First();
-            Pin pin = db.Pins.Include("User").Include(p => p.PinTags).ThenInclude(pt => pt.Tag).Include(p => p.Comments).Include("Comments.User").FirstOrDefault(p => p.Id == id);
+            Pin pin = db.Pins.Include("User").Include(p => p.PinTags).ThenInclude(pt => pt.Tag).Include(p => p.Likes).Include(p => p.Comments).Include("Comments.User").FirstOrDefault(p => p.Id == id);
             SetAccessRights();
             return View(pin);
         }
@@ -69,7 +70,7 @@ namespace SaveIt.Controllers
             else
             {
                 //Pin pin = db.Pins.Include("PinTags.Tag").Include("Comments").Where(p => p.Id == comment.PinId).First();
-                Pin pin = db.Pins.Include("User").Include(p => p.PinTags).ThenInclude(pt => pt.Tag).Include(p => p.Comments).Include("Comments.User").FirstOrDefault(p => p.Id == comment.PinId);
+                Pin pin = db.Pins.Include(p => p.PinTags).ThenInclude(pt => pt.Tag).Include(p => p.Likes).Include(p => p.Comments).Include("Comments.User").FirstOrDefault(p => p.Id == comment.PinId);
                 SetAccessRights();
                 return View(pin);
             }
@@ -191,7 +192,6 @@ namespace SaveIt.Controllers
                 return View();
             }
         }
-
         [Authorize(Roles = "User,Admin")]
         [HttpPost]
         public IActionResult Delete(int id)
