@@ -39,7 +39,7 @@ namespace SaveIt.Controllers
             }
             return View();*/
 
-            int perPage = 5;
+            int perPage = 3;
 
             var pins = db.Pins.Include("User").Include(p => p.PinTags).ThenInclude(pt => pt.Tag).Include(p => p.Likes).OrderByDescending(p => p.Date);
 
@@ -53,7 +53,7 @@ namespace SaveIt.Controllers
                 // de facut si cu boards
 
                 List<int> mergedIds = pinIds.Union(pinIdsOfTags).ToList();
-
+                
                 pins = db.Pins.Where(p => mergedIds.Contains(p.Id)).Include("User").Include(p => p.PinTags).ThenInclude(pt => pt.Tag).Include(p => p.Likes).OrderByDescending(p => p.Date);
             }
 
