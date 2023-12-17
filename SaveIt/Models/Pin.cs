@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc.Rendering;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Diagnostics.CodeAnalysis;
 using System.Diagnostics.Eventing.Reader;
 
 namespace SaveIt.Models
@@ -28,6 +29,8 @@ namespace SaveIt.Models
 
         [NotMapped]
         [Required(ErrorMessage = "Selectati cel putin un tag!")]
+        [MinLength(1, ErrorMessage = "Selectati cel putin un tag!")]
+        [NotNull]
         public List<int>? TagIds { get; set; }
 
         public string? UserId { get; set; }

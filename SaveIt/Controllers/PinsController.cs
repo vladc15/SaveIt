@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using NuGet.Protocol.Plugins;
 using SaveIt.Data;
 using SaveIt.Models;
 
@@ -220,6 +221,7 @@ namespace SaveIt.Controllers
             //Pin pin = db.Pins.Include("PinTags.Tag").Where(art => art.Id == id).First();
             Pin pin = db.Pins.Include("User").Include(p => p.PinTags).ThenInclude(pt => pt.Tag).FirstOrDefault(p => p.Id == id);
             pin.Tags = GetAllTags();
+            pin.TagIds = pin.PinTags.Select(pt => pt.TagId).ToList();
 
             if (pin.UserId == _userManager.GetUserId(User) || User.IsInRole("Admin"))
             {
@@ -240,7 +242,7 @@ namespace SaveIt.Controllers
         {
             if (ModelState.IsValid)
             {
-                Pin pin = db.Pins.Include(p => p.PinTags).Where(p => p.Id == id).First();
+                Pin pin = db.Pins.Include("User").Include(p => p.PinTags).ThenInclude(pt => pt.Tag).FirstOrDefault(p => p.Id == id);
                 
                 if (pin.UserId != _userManager.GetUserId(User) && !User.IsInRole("Admin"))
                 {
@@ -253,6 +255,8 @@ namespace SaveIt.Controllers
                 pin.Content = requestPin.Content;
                 pin.Date = DateTime.Now;
                 pin.PinTags.Clear();
+                pin.TagIds = requestPin.TagIds.ToList();
+
                 foreach (var tagId in requestPin.TagIds)
                 {
                     PinTag pinTag = new PinTag
@@ -261,6 +265,7 @@ namespace SaveIt.Controllers
                         TagId = tagId
                     };
                     db.PinTags.Add(pinTag);
+                    pin.PinTags.Add(pinTag);
                 }
                 db.SaveChanges();
                 TempData["message"] = "Pin-ul a fost modificat!";
@@ -270,7 +275,7 @@ namespace SaveIt.Controllers
             else
             {
                 requestPin.Tags = GetAllTags();
-                return View();
+                return View(requestPin);
             }
         }
         [Authorize(Roles = "User,Admin")]

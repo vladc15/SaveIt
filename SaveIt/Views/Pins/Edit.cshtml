@@ -4,7 +4,7 @@
 }
 
 
-<h2 class="text-center mt-5">Editare Pin <b>@Model.Title </b></h2>
+<h2 class="text-center mt-5">Editare Pin </h2>
 <br />
 
 <div class="contaier mt-5">
@@ -38,7 +38,7 @@
                 //<br /> <br />
 
                 <label>Selectati Tag-urile</label>
-                @Html.DropDownListFor(m => m.TagIds, new SelectList(Model.Tags, "Value", "Text"), "Selectati Tag-ul", new { @class = "form-select", multiple="multiple", id="multiple-select-field", data_placeholder="Alege Tag-urile" })
+                @Html.DropDownListFor(m => m.TagIds, new SelectList(Model.Tags, "Value", "Text", Model.TagIds), "Selectati Tag-ul", new { @class = "form-select", multiple="multiple", id="multiple-select-field", data_placeholder="Alege Tag-urile" })
                 @Html.ValidationMessageFor(m => m.TagIds, null, new { @class = "text-danger" })
                 <br /> <br />
 
