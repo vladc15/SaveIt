@@ -108,6 +108,7 @@ namespace SaveIt.Controllers
             Pin pin = db.Pins.Include("User").Include(p => p.PinTags).ThenInclude(pt => pt.Tag).Include(p => p.Likes).Include(p => p.Comments).Include("Comments.User").FirstOrDefault(p => p.Id == id);
             var usr = _userManager.GetUserId(User);
             var likes = db.Likes.Where(l => l.PinId == id && usr == l.UserId).ToList();
+            //ViewBag.Path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\images");
             if (likes.Count > 0)
             {
                 ViewBag.Liked = true;

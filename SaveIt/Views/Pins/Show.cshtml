@@ -13,6 +13,7 @@
 <div class="card">
 
     @Html.Partial("PinInfo", Model)
+    @*<img src="~/images/@Model.mediaPath" />*@
     @if (ViewBag.Liked == false)
     {
         <form method="post" action = "/Likes/AddLike/@Model.Id">
