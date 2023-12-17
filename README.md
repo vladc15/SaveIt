@@ -1,4 +1,5 @@
 # SaveIt
+##Database Diagram##
 ```mermaid
 erDiagram
     Roles ||--o{ UserRoles : is_attributed
@@ -6,20 +7,28 @@ erDiagram
         int Id PK
         string Name
     }
-    Users ||--o{ UserRoles : own
+    
+    Users ||--|{ UserRoles : own
     Users ||--o{ Boards : have
+    Users ||--o{ Likes : give
     Users {
         int Id PK
         string UserName
         string UserEmail
     }
-
+    Likes {
+        int Id  PK
+        string UserId FK
+        int PinId FK
+    }
+    Users ||--o{ Pins : create
+    
     UserRoles {
         int Id
         int UserId PK
         int RoleId PK
     }
-    Boards ||--o{ BoardsPins : have
+    Boards ||--|{ BoardsPins : have
     Boards ||--o{ Comments : have
     Pins ||--o{ Comments : have
     Users ||--o{Comments : commented
@@ -43,13 +52,17 @@ erDiagram
     
     Pins ||--o{ PinsTags : own
     Pins ||--o{ BoardsPins : appear_in
+    Pins ||--o{ Likes : have
     Pins {
         int Id PK
         string Title
         string Content
         string PhotoPath
+        string UserId FK
         date Date
     }
+    
+    
     PinsTags {
         int Id PK
         int PinId PK, FK
