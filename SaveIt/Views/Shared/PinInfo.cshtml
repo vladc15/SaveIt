@@ -4,12 +4,15 @@
     <div class="card-text">@Model.Content</div>
 
     <div class="d-flex justify-content-between flex-row mt-5">
-        <img src="~/images/@Model.mediaPath" alt="Bufnita" width="200px">
-
+        @if (Model.mediaPath != null)
+        {
+            <img src="~/images/@Model.mediaPath" alt="bufnita">
+        }
+        
         @foreach (var pintag in Model.PinTags)
         {
             <div>
-                <i class="bi bi-globe"></i>
+                <i class="bi bi-tag"></i>
                 @pintag.Tag.TagName
             </div>
         }
@@ -22,7 +25,7 @@
             </div>
         }
 
-        <span class="alert-success">@Model.Date</span>
+        <span> @Model.Date</span>
         <p>Nr like-uri: @Model.Likes.Count</p>
     </div>
 </div>

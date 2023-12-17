@@ -71,3 +71,9 @@ a.nav-link:hover {
     background-color: white !important; /* Fond alb pentru opțiunile care nu sunt selectate */
 }
 
+
+img {
+    width: 10%;
+    height: auto;
+    border-radius: 15%;
+}

@@ -27,6 +27,7 @@ namespace SaveIt.Models
         public virtual ICollection<PinTag>? PinTags { get; set; }
 
         [NotMapped]
+        [Required(ErrorMessage = "Selectati cel putin un tag!")]
         public List<int>? TagIds { get; set; }
 
         public string? UserId { get; set; }

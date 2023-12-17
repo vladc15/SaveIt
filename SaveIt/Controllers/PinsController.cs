@@ -232,7 +232,6 @@ namespace SaveIt.Controllers
                 return RedirectToAction("Index");
             }
 
-            return View(pin);
         }
 
         [Authorize(Roles = "User,Admin")]
