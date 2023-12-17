@@ -42,6 +42,25 @@ namespace SaveIt.Controllers
 
             var pins = db.Pins.Include("User").Include(p => p.PinTags).ThenInclude(pt => pt.Tag).Include(p => p.Likes).OrderByDescending(p => p.Date);
 
+            var search = "";
+
+            if (Convert.ToString(HttpContext.Request.Query["search"]) != null)
+            {
+                search = Convert.ToString(HttpContext.Request.Query["search"]).Trim();
+                List<int> pinIds = db.Pins.Where(p => p.Title.Contains(search) || p.Content.Contains(search)).Select(p => p.Id).ToList();
+                List<int> pinIdsOfTags = db.Tags.Where(t => t.TagName.Contains(search)).SelectMany(t => t.PinTags.Select(pt => pt.PinId)).Distinct().ToList();
+                // de facut si cu boards
+
+                List<int> mergedIds = pinIds.Union(pinIdsOfTags).ToList();
+
+                pins = db.Pins.Where(p => mergedIds.Contains(p.Id)).Include("User").Include(p => p.PinTags).ThenInclude(pt => pt.Tag).Include(p => p.Likes).OrderByDescending(p => p.Date);
+            }
+
+            ViewBag.SearchString = search;
+
+
+
+
             if (TempData.ContainsKey("message"))
             {
                 ViewBag.Message = TempData["message"];
@@ -50,7 +69,7 @@ namespace SaveIt.Controllers
 
             var totalItems = pins.Count();
 
-            var currentPage = Convert.ToInt32(Request.Query["page"]);
+            var currentPage = Convert.ToInt32(HttpContext.Request.Query["page"]);
 
             var offset = 0;
 
@@ -64,6 +83,19 @@ namespace SaveIt.Controllers
             ViewBag.LastPage = Math.Ceiling((float)totalItems / (float)perPage);
 
             ViewBag.Pins = paginatedPins;
+
+
+            ViewBag.PaginationBaseUrl = "";
+
+            if (search != "")
+            {
+                ViewBag.PaginationBaseUrl = "/Pins/Index?search=" + search + "&page";
+            }
+            else
+            {
+                ViewBag.PaginationBaseUrl = "/Pins/Index?page";
+            }
+
 
             return View();
         }

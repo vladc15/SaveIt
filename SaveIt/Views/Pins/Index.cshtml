@@ -20,6 +20,18 @@
 <br />
 
 
+<form method="GET">
+    <div class="input-group mb-3">
+        <input type="text" class="form-control"
+               placeholder="Search topics or keywords" name="search"
+               value="@ViewBag.SearchString">
+        <button class="btn btn-outline-success"
+                type="submit">
+            Search
+        </button>
+    </div>
+</form>
+
 
 @foreach (Pin pin in ViewBag.Pins)
 {
@@ -37,20 +49,20 @@
         <ul class="pagination">
             <li class="page-item">
                 <a class="page-link"
-                   href="/Pins/Index?page=1" aria-label="Previous">
+                   href="@ViewBag.PaginationBaseUrl=1" aria-label="Previous">
                     <span aria-hidden="true">&laquo;</span>
                 </a>
             </li>
-            @for (int i = 1; i <= ViewBag.lastPage; i++)
+            @for (int i = 1; i <= ViewBag.LastPage; i++)
             {
                 <li class="page-item">
                     <a class="page-link"
-                       href="/Pins/Index?page=@i">@(i)</a>
+                       href="@ViewBag.PaginationBaseUrl=@i">@(i)</a>
                 </li>
             }
             <li class="page-item">
                 <a class="page-link"
-                   href="/Pins/Index?page=@(ViewBag.lastPage)" aria-
+                   href="@ViewBag.PaginationBaseUrl=@(ViewBag.LastPage)" aria-
                    label="Next">
 
                     <span aria-hidden="true">&raquo;</span>
