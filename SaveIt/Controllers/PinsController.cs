@@ -174,8 +174,18 @@ namespace SaveIt.Controllers
 
         [Authorize(Roles = "User,Admin")]
         [HttpPost]
-        public IActionResult New(Pin pin)
+        public async Task<IActionResult> New(Pin pin, IFormFile PinPhoto)
         {
+            if (PinPhoto.Length > 0)
+            {
+                var fileName = Path.GetFileName(PinPhoto.FileName);
+                var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\images", fileName);
+                using (var fileSteam = new FileStream(filePath, FileMode.Create))
+                {
+                    await PinPhoto.CopyToAsync(fileSteam);
+                }
+                pin.mediaPath = fileName;
+            }
             pin.Date = DateTime.Now;
             pin.UserId = _userManager.GetUserId(User);
             if (ModelState.IsValid)

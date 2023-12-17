@@ -11,8 +11,9 @@
 <div class="contaier mt-5">
     <div class="row">
         <div class="col-6 offset-3">
-            @using (Html.BeginForm(actionName: "New", controllerName: "Pins", method: FormMethod.Post))
-            {
+            @*@using (Html.BeginForm(actionName: "New", controllerName: "Pins", method: FormMethod.Post, enctype: "multipart/form-data"))*@
+
+            <form enctype="multipart/form-data" asp-controller="Pins" asp-action="New"> 
                 @Html.Label("Title", "Titlu") <br />
                 @Html.TextBox("Title", null, new { @class = "form-control" })
                 @Html.ValidationMessage("Title", null, new { @class = "text-danger" })
@@ -23,6 +24,11 @@
                 @Html.ValidationMessage("Content", null, new { @class = "text-danger" })
                 <br /> <br />
 
+                @Html.Label("Image", "Imagine") <br />
+                <input class="form-control" type="file" name="PinPhoto" />
+
+                <br /> <br />
+                @*
                 //<label>Selectati Tag-urile</label>
                 //@Html.DropDownListFor(m => m.TagId, new SelectList(Model.Tags, "Value", "Text"), "Selectati Tag-ul", new { @class = "form-control" })
                 //@Html.ValidationMessageFor(m => m.TagId, null, new { @class = "text-danger" })
@@ -37,6 +43,7 @@
                 //@Html.ListBoxFor(m => m.TagId, new SelectList(Model.Tags, "Value", "Text"), new { @class = "form-control" })
                 //@Html.ValidationMessageFor(m => m.TagId, null, new { @class = "text-danger" })
                 //<br /> <br />
+                *@
 
                 <label>Selectati Tag-urile</label>
                 @Html.DropDownListFor(m => m.TagIds, new SelectList(Model.Tags, "Value", "Text"), "Selectati Tag-ul", new { @class = "form-select", multiple="multiple", id="multiple-select-field", data_placeholder="Alege Tag-urile" })
@@ -47,7 +54,7 @@
 
                 <button class="btn btn-success" type="submit">Creeaza Pin</button>        
 
-            }
+            </form>
         </div>
     </div>
 </div>
