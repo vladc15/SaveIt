@@ -213,7 +213,7 @@ namespace SaveIt.Controllers
 
         [Authorize(Roles = "User,Admin")]
         [HttpPost]
-        public async Task<IActionResult> New(Pin pin, IFormFile PinPhoto)
+        public async Task<IActionResult> New(Pin pin, IFormFile? PinPhoto)
         {
             pin.mediaPath = null;
             if (PinPhoto != null)
@@ -228,6 +228,15 @@ namespace SaveIt.Controllers
             }
             pin.Date = DateTime.Now;
             pin.UserId = _userManager.GetUserId(User);
+
+            /*foreach (var state in ModelState)
+            {
+                foreach (var error in state.Value.Errors)
+                {
+                    Console.WriteLine($"Atribut: {state.Key}, Eroare: {error.ErrorMessage}");
+                }
+            }*/
+
             if (ModelState.IsValid)
             {
                 db.Pins.Add(pin);
