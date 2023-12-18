@@ -208,7 +208,7 @@ namespace SaveIt.Controllers
         [HttpPost]
         public async Task<IActionResult> New(Pin pin, IFormFile PinPhoto)
         {
-            if (PinPhoto.Length > 0)
+            if (PinPhoto != null)
             {
                 var fileName = Path.GetFileName(PinPhoto.FileName);
                 var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\images", fileName);
@@ -217,6 +217,10 @@ namespace SaveIt.Controllers
                     await PinPhoto.CopyToAsync(fileSteam);
                 }
                 pin.mediaPath = fileName;
+            }
+            else
+            {
+                pin.mediaPath = null;
             }
             pin.Date = DateTime.Now;
             pin.UserId = _userManager.GetUserId(User);
