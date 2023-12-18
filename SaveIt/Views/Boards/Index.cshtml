@@ -26,7 +26,12 @@
                     }
                     <br />
 
-                    <a class="btn alert-success" href="/Boards/Show/@board.Id">Afisare Board</a>
+                    <div style="display: flex; gap: 10px;">
+                        <a class="btn alert-success" href="/Boards/Show/@board.Id">Afisare Board</a>
+                        <form method="post" action="/Boards/Delete/@board.Id">
+                            <button class="btn btn-danger" type="submit">Sterge Board-ul</button>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>

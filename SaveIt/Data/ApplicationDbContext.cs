@@ -18,6 +18,7 @@ namespace SaveIt.Data
         public DbSet<PinBoard> PinBoards { get; set; }
         public DbSet<PinTag> PinTags { get; set; }
         public DbSet<Like> Likes { get; set; }  
+        public DbSet<ApplicationUser> ApplicationUsers { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
