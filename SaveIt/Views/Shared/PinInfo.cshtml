@@ -1,31 +1,33 @@
-﻿<div class="card-body">
-    <h3 class="card-title alert-success py-3 px-3 rounded-2">@Model.Title</h3>
+﻿<div class="card text-light text-center" style="width: 50%;">
+    <a href="/Pins/Show/@Model.Id"><h3 class="card-title py-3 px-3 ">@Model.Title</h3></a>
 
-    <div class="card-text">@Model.Content</div>
+    <div class="d-flex flex-column align-items-center">
+        <div class="card-text">@Model.Content</div>
 
-    <div class="d-flex justify-content-between flex-row mt-5">
         @if (Model.mediaPath != null)
         {
-            <img src="~/images/@Model.mediaPath" alt="bufnita">
-        }
-        
-        @foreach (var pintag in Model.PinTags)
-        {
-            <div>
-                <i class="bi bi-tag"></i>
-                @pintag.Tag.TagName
-            </div>
+            <img src="~/images/@Model.mediaPath" alt="bufnita" style="width: 70%">
         }
 
-        @if (Model.User != null)
-        {
-            <div>
-                <i class="bi bi-person"></i>
-                @Model.User.UserName
-            </div>
-        }
+        <div class="d-flex justify-content-between flex-row mt-4">
+            @foreach (var pintag in Model.PinTags)
+            {
+                <div class="text-warning">
+                    <i class="bi bi-tag"></i>
+                    @pintag.Tag.TagName
+                </div>
+            }
 
-        <span> @Model.Date</span>
-        <p>Nr like-uri: @Model.Likes.Count</p>
+            @if (Model.User != null)
+            {
+                <div class="text-info">
+                    <i class="bi bi-person"></i>
+                    @Model.User.UserName
+                </div>
+            }
+
+            <span class="text-muted"> @Model.Date</span>
+            <span class="text-success">Nr like-uri: @Model.Likes.Count</span>
+        </div>
     </div>
 </div>

@@ -1,47 +1,32 @@
-﻿
-@{
+﻿@{
 }
 
-<h2 class="text-center">Afisare Pin-uri</h2> <br />
+<h2 class="text-center">Afisare Pin-uri</h2>
+<br />
 
 @if (ViewBag.Message != null)
 {
     <h2 class="@ViewBag.Alert p-3 rounded-3 text-center mb-5">@ViewBag.Message</h2>
 }
 
-@*
-<div class="d-flex justify-content-center">
-    <a class="btn btn-outline-success" href="/Tags/Index/">Afisare Tag-uri</a>
-    <br />
-    <a class="btn btn-outline-success" href="/Pins/New">Adauga Pin</a>
-    <br />
-</div>
-*@
 <br />
-
 
 <form method="GET">
     <div class="input-group mb-3">
-        <input type="text" class="form-control"
+        <input type="text" class="form-control" style="background-color: #333; color: #ffffff;"
                placeholder="Search topics or keywords" name="search"
                value="@ViewBag.SearchString">
-        <button class="btn btn-outline-success"
-                type="submit">
+        <button class="btn btn-outline-success" style="color: #ffffff;" type="submit">
             Search
         </button>
     </div>
 </form>
 
-
 @foreach (Pin pin in ViewBag.Pins)
 {
-    <div class="card">
-        
-        @Html.Partial("PinInfo", pin)
-
-        <a class="btn btn-success" href="/Pins/Show/@pin.Id">Afisare Pin</a>
-    </div>
-    <br /> <br />
+    @Html.Partial("PinInfo", pin)
+    <br />
+    <br />
 }
 
 <div>
@@ -62,9 +47,7 @@
             }
             <li class="page-item">
                 <a class="page-link"
-                   href="@ViewBag.PaginationBaseUrl=@(ViewBag.LastPage)" aria-
-                   label="Next">
-
+                   href="@ViewBag.PaginationBaseUrl=@(ViewBag.LastPage)" aria-label="Next">
                     <span aria-hidden="true">&raquo;</span>
                 </a>
             </li>

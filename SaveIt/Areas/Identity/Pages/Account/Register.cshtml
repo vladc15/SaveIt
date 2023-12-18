@@ -4,6 +4,51 @@
     ViewData["Title"] = "Register";
 }
 
+<style>
+    body {
+        background-color: #121212;
+        color: #ffffff;
+    }
+
+    h1, h2, h3 {
+        color: #00b894;
+    }
+
+    .form-control, .btn-primary {
+        background-color: #333; /* Darker background for better readability */
+        border: 1px solid #00b894;
+        color: #ffffff;
+    }
+
+        .form-control::placeholder {
+            color: #ffffff80; /* Placeholder color with reduced opacity */
+        }
+
+        .form-control:focus {
+            border-color: #00b894;
+            box-shadow: 0 0 0 0.2rem rgba(0, 184, 148, 0.25);
+        }
+
+    .text-danger {
+        color: #ff7675;
+    }
+
+    /* Adjust gray text color */
+    label, .text-muted {
+        color: #ffffff;
+    }
+
+    /* Adjust link color */
+    a {
+        color: #00b894;
+    }
+
+        /* Adjust link hover color */
+        a:hover {
+            color: #ffffff;
+        }
+</style>
+
 <h1>@ViewData["Title"]</h1>
 
 <div class="row">
@@ -39,8 +84,10 @@
                 {
                     <div>
                         <p>
-                            There are no external authentication services configured. See this <a href="https://go.microsoft.com/fwlink/?LinkID=532715">article
-                            about setting up this ASP.NET application to support logging in via external services</a>.
+                            There are no external authentication services configured. See this <a href="https://go.microsoft.com/fwlink/?LinkID=532715">
+                                article
+                                about setting up this ASP.NET application to support logging in via external services
+                            </a>.
                         </p>
                     </div>
                 }

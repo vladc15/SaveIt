@@ -1,20 +1,21 @@
 ﻿html {
-  font-size: 14px;
+    font-size: 14px;
+    background-color: #121212;
 }
 
 @media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
+    html {
+        font-size: 16px;
+    }
 }
 
 html {
-  position: relative;
-  min-height: 100%;
+    position: relative;
+    min-height: 100%;
 }
 
 body {
-  margin-bottom: 60px;
+    margin-bottom: 60px;
 }
 
 .field-validation-valid {
@@ -26,54 +27,77 @@ body {
 }
 
 .navbar {
-    background-color: #dfe6e9 !important;
+    background-color: #121212 !important;
     border: none !important;
-    box-shadow: 0 3px 12px #636e72 !important;
+    box-shadow: 0 3px 12px rgba(0, 0, 0, 0.5) !important;
 }
 
 a.nav-link {
-    color: #2c2c2c !important;
+    color: #ffffff !important;
 }
 
-a.nav-link:hover {
-    color: #00b894 !important;
-}
+    a.nav-link:hover {
+        color: #00b894 !important;
+    }
 
 .logoutbtn {
-    color: #2c2c2c !important;
+    color: #ffffff !important;
 }
 
-.logoutbtn:hover {
-    color: #00b894 !important;
-}
+    .logoutbtn:hover {
+        color: #00b894 !important;
+    }
 
 #multiple-select-field + .select2-container--bootstrap5 .select2-selection--multiple .select2-selection__choice {
-    background-color: #28a745 !important; /* Albastru pentru elementele selectate */
+    background-color: #00b894 !important; /* Green for selected items */
     color: white !important;
 }
 
 #multiple-select-field + .select2-container--bootstrap5 .select2-results__option:hover:not(.select2-results__option--selected) {
-    background-color: grey !important; /* Gri pentru opțiunile hover care nu sunt selectate */
+    background-color: #444 !important; /* Dark grey for hover options that are not selected */
 }
 
 #multiple-select-field + .select2-container--bootstrap5 .select2-results__option.select2-results__option--selected:hover {
-    background-color: #28a745 !important; /* Albastru pentru opțiunile deja selectate atunci când se face hover */
+    background-color: #00b894 !important; /* Green for already selected options on hover */
     color: white !important;
 }
 
 #multiple-select-field + .select2-container--bootstrap5 .select2-results__option.select2-results__option--selected {
-    background-color: #28a745 !important; /* Albastru pentru opțiunile deja selectate */
+    background-color: #00b894 !important; /* Green for already selected options */
     color: white !important;
 }
 
-/* Opțiunile care nu sunt selectate */
+/* Options that are not selected */
 #multiple-select-field + .select2-container--bootstrap5 .select2-results__option:not(.select2-results__option--selected) {
-    background-color: white !important; /* Fond alb pentru opțiunile care nu sunt selectate */
+    background-color: #333 !important; /* Dark grey background for options that are not selected */
 }
-
 
 img {
     width: 10%;
     height: auto;
     border-radius: 15%;
+}
+
+.card {
+    background-color: #121212 !important;
+    border-radius: 15px;
+}
+
+body {
+    background-color: #000 !important;
+}
+a {
+    text-decoration: none !important;
+    color: #00b894;
+}
+h2 {
+    color: #00b894;
+}
+
+input, textarea {
+    background-color: #333; 
+    color: #ffffff;
+}
+label {
+    color: #00b894;
 }
