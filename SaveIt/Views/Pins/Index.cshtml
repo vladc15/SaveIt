@@ -9,27 +9,32 @@
     <h2 class="@ViewBag.Alert p-3 rounded-3 text-center mb-5">@ViewBag.Message</h2>
 }
 
-<br />
+<div class="d-flex justify-content-center">
+    <!-- Center the search bar -->
+    <form method="GET">
+        <div class="input-group mb-3">
+            <input type="text" class="form-control" style="background-color: #333; color: #ffffff;"
+                   placeholder="Search topics or keywords" name="search"
+                   value="@ViewBag.SearchString">
+            <button class="btn btn-outline-success" style="color: #ffffff;" type="submit">
+                Search
+            </button>
+        </div>
+    </form>
+</div>
 
-<form method="GET">
-    <div class="input-group mb-3">
-        <input type="text" class="form-control" style="background-color: #333; color: #ffffff;"
-               placeholder="Search topics or keywords" name="search"
-               value="@ViewBag.SearchString">
-        <button class="btn btn-outline-success" style="color: #ffffff;" type="submit">
-            Search
-        </button>
-    </div>
-</form>
+<div class="d-flex flex-wrap justify-content-center">
+    <!-- Center the pins -->
+    @foreach (Pin pin in ViewBag.Pins)
+    {
+        @Html.Partial("PinInfo", pin)
+        <br />
+        <br />
+    }
+</div>
 
-@foreach (Pin pin in ViewBag.Pins)
-{
-    @Html.Partial("PinInfo", pin)
-    <br />
-    <br />
-}
-
-<div>
+<div class="d-flex justify-content-center">
+    <!-- Center the pagination section -->
     <nav aria-label="Page navigation example">
         <ul class="pagination">
             <li class="page-item">

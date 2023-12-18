@@ -2,13 +2,7 @@
     <a href="/Pins/Show/@Model.Id"><h3 class="card-title py-3 px-3 ">@Model.Title</h3></a>
 
     <div class="d-flex flex-column align-items-center">
-        <div class="card-text">@Model.Content</div>
-
-        @if (Model.mediaPath != null)
-        {
-            <img src="~/images/@Model.mediaPath" alt="bufnita" style="width: 70%">
-        }
-
+       
         <div class="d-flex justify-content-between flex-row mt-4">
             @foreach (var pintag in Model.PinTags)
             {
@@ -29,5 +23,12 @@
             <span class="text-muted"> @Model.Date</span>
             <span class="text-success">Nr like-uri: @Model.Likes.Count</span>
         </div>
+        @if (Model.mediaPath != null)
+        {
+            <img src="~/images/@Model.mediaPath" alt="bufnita" style="width: 70%">
+
+        }
+        <div class="card-text">@Model.Content</div>
+        
     </div>
 </div>
