@@ -50,7 +50,14 @@ namespace SaveIt.Controllers
                 search = Convert.ToString(HttpContext.Request.Query["search"]).Trim();
                 List<int> pinIds = db.Pins.Where(p => p.Title.Contains(search) || p.Content.Contains(search)).Select(p => p.Id).ToList();
                 List<int> pinIdsOfTags = db.Tags.Where(t => t.TagName.Contains(search)).SelectMany(t => t.PinTags.Select(pt => pt.PinId)).Distinct().ToList();
-                // de facut si cu boards
+                List<int?> pinIdsOfBoards = db.Boards.Where(b => b.Name.Contains(search)).SelectMany(b => b.PinBoards.Select(pb => pb.PinId)).Distinct().ToList();
+                foreach (var pinIdOfBoard in pinIdsOfBoards)
+                {
+                    if (pinIdOfBoard != null)
+                    {
+                        pinIds.Add((int)pinIdOfBoard);
+                    }
+                }
 
                 List<int> mergedIds = pinIds.Union(pinIdsOfTags).ToList();
                 
@@ -110,6 +117,7 @@ namespace SaveIt.Controllers
             var usr = _userManager.GetUserId(User);
             var likes = db.Likes.Where(l => l.PinId == id && usr == l.UserId).ToList();
             //ViewBag.Path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\images");
+            ViewBag.UserBoards = db.Boards.Where(b => b.UserId == _userManager.GetUserId(User)).ToList();
             if (likes.Count > 0)
             {
                 ViewBag.Liked = true;
@@ -144,9 +152,38 @@ namespace SaveIt.Controllers
             {
                 //Pin pin = db.Pins.Include("PinTags.Tag").Include("Comments").Where(p => p.Id == comment.PinId).First();
                 Pin pin = db.Pins.Include(p => p.PinTags).ThenInclude(pt => pt.Tag).Include(p => p.Likes).Include(p => p.Comments).Include("Comments.User").FirstOrDefault(p => p.Id == comment.PinId);
+                ViewBag.UserBoards = db.Boards.Where(b => b.UserId == _userManager.GetUserId(User)).ToList();
                 SetAccessRights();
                 return View(pin);
             }
+        }
+
+        [HttpPost]
+        public IActionResult AddBoard([FromForm] PinBoard pinBoard)
+        {
+            if (ModelState.IsValid)
+            {
+                
+                if (db.PinBoards.Where(pb => pb.BoardId == pinBoard.BoardId && pb.PinId == pinBoard.PinId).Count() > 0)
+                {
+                    TempData["message"] = "Pin-ul este deja in board!";
+                    TempData["messageType"] = "alert-danger";
+                }
+                else
+                {
+                    db.PinBoards.Add(pinBoard);
+                    db.SaveChanges();
+                    TempData["message"] = "Pin-ul a fost adaugat in board!";
+                    TempData["messageType"] = "alert-success";
+                }
+
+            }
+            else
+            {
+                TempData["message"] = "Nu s-a putut adauga in Board!";
+                TempData["messageType"] = "alert-danger";
+            }
+            return Redirect("/Pins/Show/" + pinBoard.PinId);
         }
 
         [NonAction]
@@ -176,9 +213,10 @@ namespace SaveIt.Controllers
 
         [Authorize(Roles = "User,Admin")]
         [HttpPost]
-        public async Task<IActionResult> New(Pin pin, IFormFile PinPhoto)
+        public async Task<IActionResult> New(Pin pin, IFormFile? PinPhoto)
         {
-            if (PinPhoto.Length > 0)
+            pin.mediaPath = null;
+            if (PinPhoto != null)
             {
                 var fileName = Path.GetFileName(PinPhoto.FileName);
                 var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\images", fileName);
@@ -190,6 +228,15 @@ namespace SaveIt.Controllers
             }
             pin.Date = DateTime.Now;
             pin.UserId = _userManager.GetUserId(User);
+
+            /*foreach (var state in ModelState)
+            {
+                foreach (var error in state.Value.Errors)
+                {
+                    Console.WriteLine($"Atribut: {state.Key}, Eroare: {error.ErrorMessage}");
+                }
+            }*/
+
             if (ModelState.IsValid)
             {
                 db.Pins.Add(pin);

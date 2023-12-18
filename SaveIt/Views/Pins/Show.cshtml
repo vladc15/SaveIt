@@ -8,6 +8,13 @@
     <a class="btn btn-outline-success" href="/Pins/New">Adauga Pin</a>
 </div>
 *@
+@if (TempData["message"] != null)
+{
+    <div class="alert @TempData["messageType"] p-3 rounded-3 text-center mb-5">
+        @TempData["message"]
+    </div>
+}
+
 <br />
 
     @Html.Partial("PinInfo", Model)
@@ -46,6 +53,7 @@
         </div>
     }
 
+</div>
 <br /> <br />
 
 @*afisare comentarii*@

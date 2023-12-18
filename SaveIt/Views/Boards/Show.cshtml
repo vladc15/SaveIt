@@ -1,0 +1,37 @@
+﻿@model SaveIt.Models.Board
+
+@if (TempData["message"] != null)
+{
+    <div class="alert @TempData["messageType"] p-3 rounded-3 text-center mb-5">
+        @TempData["message"]
+    </div>
+}
+<div class="row">
+    <div class="col-12">
+        <h5 class="card-title" name="Name">@Model.Name</h5>
+        @if (ViewBag.EsteAdmin)
+        {
+            <i class="bi bi-person"> Creat de: </i> @Model.User.UserName
+        }
+        <br /> <br />
+        <br /> <br />
+
+    </div>
+
+    @if(Model.PinBoards.Count > 0)
+        @foreach (var pinBoard in Model.PinBoards)
+        {
+            <div class="col-12">
+                <div class="card" style="width: 100%;">
+                    <div class="card-body">
+                        @Html.Partial("PinInfo", pinBoard.Pin)
+                        <form method="post" asp-controller="Boards" asp-action="RemovePin">
+                            <input type="hidden" name="PinId" value="@pinBoard.Pin.Id" />
+                            <input type="hidden" name="BoardId" value="@pinBoard.Board.Id" />
+                            <button type="submit" class="btn btn-danger">Remove Pin</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        }
+</div>
