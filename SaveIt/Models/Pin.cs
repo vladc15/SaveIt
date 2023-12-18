@@ -42,7 +42,7 @@ namespace SaveIt.Models
 
         [NotMapped]
         public IEnumerable<SelectListItem>? Tags { get; set; }
-        public ICollection<PinBoard>? PinBoards { get; set; }
+        public virtual ICollection<PinBoard>? PinBoards { get; set; }
 
     }
 }

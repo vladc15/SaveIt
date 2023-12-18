@@ -1,0 +1,25 @@
+﻿@model SaveIt.Models.Board
+<div class="row">
+    <div class="col-12">
+        <h5 class="card-title" name="Name">@Model.Name</h5>
+        @if (ViewBag.EsteAdmin)
+        {
+            <i class="bi bi-person"> Creat de: </i> @Model.User.UserName
+        }
+        <br /> <br />
+        <br /> <br />
+
+    </div>
+
+    @if(Model.PinBoards.Count > 0)
+        @foreach (var pinBoard in Model.PinBoards)
+        {
+            <div class="col-12">
+                <div class="card" style="width: 100%;">
+                    <div class="card-body">
+                        @Html.Partial("PinInfo", pinBoard.Pin)
+                    </div>
+                </div>
+            </div>
+        }
+</div>

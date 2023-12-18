@@ -48,6 +48,28 @@
         </div>
     }
 
+    <form method="post" asp-controller="Pins" asp-action="AddBoard">
+        <input type="hidden" name="PinId" value="@Model.Id" />
+        <div class="d-flex flex-row justify-content-center p-3 border-1 border-top">
+            <div>
+                <select name="BoardId" class="form-control">
+                    <option selected>Adauga in board</option>
+                    @foreach (var board in ViewBag.UserBoards)
+                    {
+                        <option value="@board.Id">@board.Name</option>
+                    }
+                </select>
+            </div>
+            <div>
+                <input type="submit" class="btn btn-success alert-success" value="+" />
+            </div>
+        </div>
+
+
+
+    </form>
+
+
 </div>
 <br /> <br />
 

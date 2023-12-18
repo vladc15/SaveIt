@@ -110,6 +110,7 @@ namespace SaveIt.Controllers
             var usr = _userManager.GetUserId(User);
             var likes = db.Likes.Where(l => l.PinId == id && usr == l.UserId).ToList();
             //ViewBag.Path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\images");
+            ViewBag.UserBoards = db.Boards.Where(b => b.UserId == _userManager.GetUserId(User)).ToList();
             if (likes.Count > 0)
             {
                 ViewBag.Liked = true;
@@ -144,9 +145,38 @@ namespace SaveIt.Controllers
             {
                 //Pin pin = db.Pins.Include("PinTags.Tag").Include("Comments").Where(p => p.Id == comment.PinId).First();
                 Pin pin = db.Pins.Include(p => p.PinTags).ThenInclude(pt => pt.Tag).Include(p => p.Likes).Include(p => p.Comments).Include("Comments.User").FirstOrDefault(p => p.Id == comment.PinId);
+                ViewBag.UserBoards = db.Boards.Where(b => b.UserId == _userManager.GetUserId(User)).ToList();
                 SetAccessRights();
                 return View(pin);
             }
+        }
+
+        [HttpPost]
+        public IActionResult AddBoard([FromForm] PinBoard pinBoard)
+        {
+            if (ModelState.IsValid)
+            {
+                
+                if (db.PinBoards.Where(pb => pb.BoardId == pinBoard.BoardId && pb.PinId == pinBoard.PinId).Count() > 0)
+                {
+                    TempData["message"] = "Pin-ul este deja in board!";
+                    TempData["messageType"] = "alert-danger";
+                }
+                else
+                {
+                    db.PinBoards.Add(pinBoard);
+                    db.SaveChanges();
+                    TempData["message"] = "Pin-ul a fost adaugat in board!";
+                    TempData["messageType"] = "alert-success";
+                }
+
+            }
+            else
+            {
+                TempData["message"] = "Nu s-a putut adauga in Board!";
+                TempData["messageType"] = "alert-danger";
+            }
+            return Redirect("/Pins/Show/" + pinBoard.PinId);
         }
 
         [NonAction]

@@ -1,0 +1,17 @@
+﻿@model SaveIt.Models.Board
+<h2 class="mb-5 text-center">Adaugare Board</h2>
+<br />
+
+
+@using (Html.BeginForm(actionName: "New", controllerName: "Boards", method: FormMethod.Post))
+{
+
+    @Html.Label("Name", "Nume Board")
+    <br />
+
+    @Html.TextBox("Name", null, new { @class = "form-control" })
+    @Html.ValidationMessageFor(m => m.Name, null, new { @class = "text-danger" })
+    <br /> <br />
+
+    <button class="btn btn-success" type="submit">Adauga Board</button>
+}

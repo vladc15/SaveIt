@@ -11,6 +11,8 @@ namespace SaveIt.Models
 
         public virtual ICollection<Comment>? Comments { get; set; }
 
+        public virtual ICollection<Board>? Boards { get; set; }
+
         public string? FirstName { get; set; }
 
         public string? LastName { get; set; }
