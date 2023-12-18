@@ -50,7 +50,14 @@ namespace SaveIt.Controllers
                 search = Convert.ToString(HttpContext.Request.Query["search"]).Trim();
                 List<int> pinIds = db.Pins.Where(p => p.Title.Contains(search) || p.Content.Contains(search)).Select(p => p.Id).ToList();
                 List<int> pinIdsOfTags = db.Tags.Where(t => t.TagName.Contains(search)).SelectMany(t => t.PinTags.Select(pt => pt.PinId)).Distinct().ToList();
-                // de facut si cu boards
+                List<int?> pinIdsOfBoards = db.Boards.Where(b => b.Name.Contains(search)).SelectMany(b => b.PinBoards.Select(pb => pb.PinId)).Distinct().ToList();
+                foreach (var pinIdOfBoard in pinIdsOfBoards)
+                {
+                    if (pinIdOfBoard != null)
+                    {
+                        pinIds.Add((int)pinIdOfBoard);
+                    }
+                }
 
                 List<int> mergedIds = pinIds.Union(pinIdsOfTags).ToList();
                 
@@ -208,6 +215,7 @@ namespace SaveIt.Controllers
         [HttpPost]
         public async Task<IActionResult> New(Pin pin, IFormFile PinPhoto)
         {
+            pin.mediaPath = null;
             if (PinPhoto != null)
             {
                 var fileName = Path.GetFileName(PinPhoto.FileName);
@@ -217,10 +225,6 @@ namespace SaveIt.Controllers
                     await PinPhoto.CopyToAsync(fileSteam);
                 }
                 pin.mediaPath = fileName;
-            }
-            else
-            {
-                pin.mediaPath = null;
             }
             pin.Date = DateTime.Now;
             pin.UserId = _userManager.GetUserId(User);

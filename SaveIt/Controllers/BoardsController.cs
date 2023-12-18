@@ -137,6 +137,7 @@ namespace SaveIt.Controllers
             }
         }
 
+        /*
         [Authorize(Roles="User,Admin")]
         public IActionResult Edit(int id)
         {
@@ -151,9 +152,29 @@ namespace SaveIt.Controllers
                 TempData["messageType"] = "alert-danger";
                 return RedirectToAction("Index", "Pins");
             }
-        }
+        }*/
 
         // TODO: edit
+
+        // vreau sa pot scoate un pin din board si sa am buton de remove atunci cand am un board afisat
+        [HttpPost]
+        public IActionResult RemovePin([FromForm] PinBoard pinBoard)
+        {
+            if (ModelState.IsValid)
+            {
+                var pinBoardToDelete = db.PinBoards.Where(pb => pb.BoardId == pinBoard.BoardId && pb.PinId == pinBoard.PinId).FirstOrDefault();
+                db.PinBoards.Remove(pinBoardToDelete);
+                db.SaveChanges();
+                TempData["message"] = "Pin-ul a fost sters din board!";
+                TempData["messageType"] = "alert-success";
+            }
+            else
+            {
+                TempData["message"] = "Pin-ul nu a fost sters din board!";
+                TempData["messageType"] = "alert-danger";
+            }
+            return Redirect("/Boards/Show/" + pinBoard.BoardId);
+        }
         
         public IActionResult Delete(int id)
         {
