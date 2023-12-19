@@ -6,23 +6,22 @@
         @TempData["message"]
     </div>
 }
+
 <div class="row">
     <div class="col-12">
-        <h5 class="card-title" name="Name">@Model.Name</h5>
+        <h5 class="card-title text-light" name="Name">@Model.Name</h5>
         @if (ViewBag.EsteAdmin)
         {
-            <i class="bi bi-person"> Creat de: </i> @Model.User.UserName
+            <p class="text-light"><i class="bi bi-person"></i> Creat de: @Model.User.UserName</p>
         }
-        <br /> <br />
-        <br /> <br />
-
+        <br /><br /><br /><br />
     </div>
 
-    @if(Model.PinBoards.Count > 0)
+    @if (Model.PinBoards.Count > 0)
         @foreach (var pinBoard in Model.PinBoards)
         {
             <div class="col-12">
-                <div class="card" style="width: 100%;">
+                <div class="card text-white bg-dark mb-3" style="width: 100%;">
                     <div class="card-body">
                         @Html.Partial("PinInfo", pinBoard.Pin)
                         <form method="post" asp-controller="Boards" asp-action="RemovePin">

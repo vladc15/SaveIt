@@ -15,21 +15,21 @@
     @foreach (var board in ViewBag.Boards)
     {
         <div class="col-4 mb-4">
-            <div class="card">
+            <div class="card bg-dark text-white">
                 <div class="card-body">
 
                     <h5 class="card-title" name="Name">@board.Name</h5>
 
                     @if (ViewBag.EsteAdmin)
                     {
-                        <div><i class="bi bi-person"> Creat de: </i> @board.User.UserName</div>
+                        <div><i class="bi bi-person text-muted"> Creat de: @board.User.UserName</i></div>
                     }
                     <br />
 
                     <div style="display: flex; gap: 10px;">
-                        <a class="btn alert-success" href="/Boards/Show/@board.Id">Afisare Board</a>
+                        <a class="btn btn-outline-success" href="/Boards/Show/@board.Id">Afisare Board</a>
                         <form method="post" action="/Boards/Delete/@board.Id">
-                            <button class="btn btn-danger" type="submit">Sterge Board-ul</button>
+                            <button class="btn btn-outline-danger" type="submit">Sterge Board-ul</button>
                         </form>
                     </div>
                 </div>

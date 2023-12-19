@@ -8,31 +8,30 @@
 
 @if (TempData.ContainsKey("message"))
 {
-    <h1>@ViewBag.message</h1>
+    <h1 class="text-light">@ViewBag.message</h1>
 }
 
 <a class="btn btn-success" href="/Tags/New">Adauga un nou tag</a>
 
-@*<div class="align-items-center justify-content-center d-flex">
-    <a class="btn btn-success" href="/Tags/New">Adauga un nou tag</a>
-</div>*@
-
-<br /> <br />
+<br />
+<br />
 
 @foreach (var tag in ViewBag.Tags)
 {
-    @Html.Label("TagName", "Denumire Tag")
-    <p>@tag.TagName</p>
-    <div style="display: flex; gap: 10px;">
-        <a class="btn alert-success" href="/Tags/Show/@tag.Id">Afisare Tag</a>
-        <a class="btn alert-success" href="/Tags/Edit/@tag.Id">Editare Tag</a>
-        <form method="post" action="/Tags/Delete/@tag.Id">
-            <button class="btn btn-danger" type="submit">Sterge Tag-ul</button>
-        </form>
+    <div class="text-light">
+        @Html.Label("TagName", "Denumire Tag")
+        <p>@tag.TagName</p>
+        <div style="display: flex; gap: 10px;">
+            <a class="btn btn-outline-success" href="/Tags/Show/@tag.Id">Afisare Tag</a>
+            <a class="btn btn-outline-success" href="/Tags/Edit/@tag.Id">Editare Tag</a>
+            <form method="post" action="/Tags/Delete/@tag.Id">
+                <button class="btn btn-outline-danger" type="submit">Sterge Tag-ul</button>
+            </form>
+        </div>
+        <br />
+        <hr />
+        <br />
     </div>
-    <br />
-    <hr />
-    <br />
 }
 <br />
 
