@@ -101,3 +101,22 @@ input, textarea {
 label {
     color: #00b894;
 }
+
+h1, h2, h3 {
+    color: #00b894;
+}
+
+.form-control, .btn-primary {
+    background-color: #333; /* Darker background for better readability */
+    border: 1px solid #00b894;
+    color: #ffffff;
+}
+
+    .form-control::placeholder {
+        color: #ffffff80; /* Placeholder color with reduced opacity */
+    }
+
+    .form-control:focus {
+        border-color: #00b894;
+        box-shadow: 0 0 0 0.2rem rgba(0, 184, 148, 0.25);
+    }
