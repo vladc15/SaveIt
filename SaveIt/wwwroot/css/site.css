@@ -71,7 +71,9 @@ a.nav-link {
 #multiple-select-field + .select2-container--bootstrap5 .select2-results__option:not(.select2-results__option--selected) {
     background-color: #333 !important; /* Dark grey background for options that are not selected */
 }
-
+.card-title a:hover {
+    color: #ffffff !important;
+}
 img {
     width: 10%;
     height: auto;
@@ -120,3 +122,7 @@ h1, h2, h3 {
         border-color: #00b894;
         box-shadow: 0 0 0 0.2rem rgba(0, 184, 148, 0.25);
     }
+
+.hover-white:hover h3 {
+    color: #ffffff !important;
+}
