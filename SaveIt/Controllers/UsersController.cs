@@ -39,7 +39,33 @@ namespace SaveIt.Controllers
 
         public async Task<ActionResult> Show(string id)
         {
-            ApplicationUser user = db.Users.Find(id);
+            /*ApplicationUser user = db.Users
+                                     .Include(u => u.Boards)
+                                        .ThenInclude(b => b.PinBoards)
+                                        .ThenInclude(pb => pb.Pin)
+                                        .ThenInclude(p => p.PinTags)
+                                        .ThenInclude(pt => pt.Tag)
+                                     .Include(u => u.Boards)
+                                        .ThenInclude(b => b.PinBoards)
+                                        .ThenInclude(pb => pb.Pin)
+                                        .ThenInclude(p => p.Comments)
+                                      .Include(u => u.Boards)
+                                        .ThenInclude(b => b.PinBoards)
+                                        .ThenInclude(pb => pb.Pin)
+                                        .ThenInclude(p => p.Likes)
+                                     .Where(u => u.Id == id).FirstOrDefault();*/
+            ApplicationUser user = db.Users.Include(u => u.Boards).Where(u => u.Id == id).FirstOrDefault();
+            // vreau toate pinurile din toate boardurile userului
+            ViewBag.SavedPins = db.Pins
+                                .Include("Likes")
+                                .Include("Comments")
+                                .Include(p => p.PinTags)
+                                    .ThenInclude(pt => pt.Tag)
+                                .Include(p => p.PinBoards)
+                                    .ThenInclude(pb => pb.Board)
+                                  .Where(p => p.PinBoards.Any(pb => pb.Board.UserId == id))
+                                    .Distinct().ToList();
+
             var roles = await _userManager.GetRolesAsync(user);
             ViewBag.Roles = roles;
             return View(user);

@@ -110,7 +110,7 @@ else
             <div class="card text-white bg-dark mb-3">
                 <form method="post" action="/Pins/Show/@Model.Id">
                     <div class="card-body">
-
+                        <input type="hidden" name="PinId" value="@Model.Id" />
                         <label class="text-light">Continut comentariu</label>
                         <textarea class="form-control dark-textarea" name="Content"></textarea>
                         @Html.ValidationMessage("Content", null, new { @class = "text-danger" })

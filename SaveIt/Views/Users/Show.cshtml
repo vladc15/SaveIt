@@ -29,3 +29,60 @@
         </div>
     </div>
 </div>
+
+<div class="row mt-3">
+
+    @foreach (var board in Model.Boards)
+    {
+        <div class="col-4 mb-4">
+            <div class="card bg-dark text-white">
+                <div class="card-body">
+
+                    <h5 class="card-title" name="Name">@board.Name</h5>
+                    <br />
+
+                    <div style="display: flex; gap: 10px;">
+                        <a class="btn btn-outline-success" href="/Boards/Show/@board.Id">Afisare Board</a>
+                        <form method="post" action="/Boards/Delete/@board.Id">
+                            <button class="btn btn-outline-danger" type="submit">Sterge Board-ul</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+
+</div>
+
+@*
+@foreach(var board in Model.Boards)
+{
+    @if (board.PinBoards.Count > 0)
+    {
+        @foreach (var pinBoard in board.PinBoards)
+        {
+            @if (pinBoard.Pin != null)
+            {
+                <div class="col-12">
+                    <div class="card text-white bg-dark mb-3" style="width: 100%;">
+                        <div class="card-body">
+                            @Html.Partial("PinInfo", pinBoard.Pin)
+                        </div>
+                    </div>
+                </div>
+            }
+        }
+    }
+}
+*@
+
+@foreach (Pin pin in ViewBag.SavedPins)
+{
+    <div class="col-12">
+        <div class="card text-white bg-dark mb-3" style="width: 100%;">
+            <div class="card-body">
+                @Html.Partial("PinInfo", pin)
+            </div>
+        </div>
+    </div>
+}
