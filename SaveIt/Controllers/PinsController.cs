@@ -41,7 +41,7 @@ namespace SaveIt.Controllers
 
             int perPage = 3;
 
-            var pins = db.Pins.Include("User").Include(p => p.PinTags).ThenInclude(pt => pt.Tag).Include(p => p.Likes).OrderByDescending(p => p.Date);
+            var pins = db.Pins.Include("User").Include(p => p.PinTags).ThenInclude(pt => pt.Tag).Include(p => p.Likes).OrderByDescending(p => p.Likes.Count).ThenByDescending(p => p.Date);
 
             var search = "";
 
@@ -61,7 +61,7 @@ namespace SaveIt.Controllers
 
                 List<int> mergedIds = pinIds.Union(pinIdsOfTags).ToList();
                 
-                pins = db.Pins.Where(p => mergedIds.Contains(p.Id)).Include("User").Include(p => p.PinTags).ThenInclude(pt => pt.Tag).Include(p => p.Likes).OrderByDescending(p => p.Date);
+                pins = db.Pins.Where(p => mergedIds.Contains(p.Id)).Include("User").Include(p => p.PinTags).ThenInclude(pt => pt.Tag).Include(p => p.Likes).OrderBy(p => p.Title).ThenByDescending(p => p.Likes.Count).ThenByDescending(p => p.Date);
             }
 
             ViewBag.SearchString = search;
@@ -97,11 +97,11 @@ namespace SaveIt.Controllers
 
             if (search != "")
             {
-                ViewBag.PaginationBaseUrl = "/Pins/Index?search=" + search + "&page";
+                ViewBag.PaginationBaseUrl = "/Pins/Index/?search=" + search + "&page";
             }
             else
             {
-                ViewBag.PaginationBaseUrl = "/Pins/Index?page";
+                ViewBag.PaginationBaseUrl = "/Pins/Index/?page";
             }
 
 
