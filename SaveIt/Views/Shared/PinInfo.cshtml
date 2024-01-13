@@ -27,10 +27,14 @@
 
             <span class="text-muted"> @Model.Date</span>
         </div>
-        @if (Model.mediaPath != null)
+        @if (Model.mediaType == "image")
         {
             <img src="~/images/@Model.mediaPath" alt="bufnita" style="width: 70%">
 
+        }
+        else
+        {
+            <iframe width="420" height="315" src="@Model.mediaPath"> </iframe>
         }
         <div class="card-text">@Model.Content</div>
         

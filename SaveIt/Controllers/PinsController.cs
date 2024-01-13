@@ -208,6 +208,7 @@ namespace SaveIt.Controllers
         {
             Pin pin = new Pin();
             pin.Tags = GetAllTags();
+            pin.mediaPath = null;
             return View(pin);
         }
 
@@ -215,17 +216,35 @@ namespace SaveIt.Controllers
         [HttpPost]
         public async Task<IActionResult> New(Pin pin, IFormFile? PinPhoto)
         {
-            pin.mediaPath = null;
             if (PinPhoto != null)
             {
+                if (pin.mediaPath != null)
+                {
+                    pin.Tags = GetAllTags();
+                    ModelState.AddModelError("mediaPath", "Nu puteti adauga o imagine si un link " +
+                        "pentru video in acelasi timp!");
+                    return View(pin);
+                }
                 var fileName = Path.GetFileName(PinPhoto.FileName);
                 var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\images", fileName);
                 using (var fileSteam = new FileStream(filePath, FileMode.Create))
                 {
                     await PinPhoto.CopyToAsync(fileSteam);
                 }
+                pin.mediaType = "image";
                 pin.mediaPath = fileName;
             }
+            else if (pin.mediaPath != null)
+            {
+                pin.mediaType = "video";
+            }
+            else
+            {
+                pin.Tags = GetAllTags();
+                ModelState.AddModelError("mediaPath", "Trebuie sa adaugati o imagine sau un link pentru video!");
+                return View(pin);
+            }
+
             pin.Date = DateTime.Now;
             pin.UserId = _userManager.GetUserId(User);
 
@@ -265,7 +284,6 @@ namespace SaveIt.Controllers
         [Authorize(Roles = "User,Admin")]
         public IActionResult Edit(int id)
         {
-            //Pin pin = db.Pins.Include("PinTags.Tag").Where(art => art.Id == id).First();
             Pin pin = db.Pins.Include("User").Include(p => p.PinTags).ThenInclude(pt => pt.Tag).FirstOrDefault(p => p.Id == id);
             pin.Tags = GetAllTags();
             pin.TagIds = pin.PinTags.Select(pt => pt.TagId).ToList();

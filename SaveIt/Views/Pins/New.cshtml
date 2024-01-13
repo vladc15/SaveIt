@@ -27,7 +27,15 @@
                 @Html.Label("Image", "Imagine") <br />
                 <input class="form-control" type="file" name="PinPhoto" />
 
+   
+
                 <br /> <br />
+                @Html.Label("Link", "Link video") <br />
+                @Html.TextBox("mediaPath", null, new { @class = "form-control" })
+                @Html.ValidationMessage("mediaPath", null, new { @class = "text-danger" })
+
+                <br /> <br />
+
                 @*
                 //<label>Selectati Tag-urile</label>
                 //@Html.DropDownListFor(m => m.TagId, new SelectList(Model.Tags, "Value", "Text"), "Selectati Tag-ul", new { @class = "form-control" })

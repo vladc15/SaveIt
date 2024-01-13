@@ -20,6 +20,7 @@ namespace SaveIt.Models
         [StringLength(500, ErrorMessage = "Descrierea nu poate avea mai mult de 500 de caractere!")]
         [MinLength(3, ErrorMessage = "Descrierea nu poate avea mai putin de 3 caractere!")]
         public string? Content { get; set; }
+        public string? mediaType { get; set; }
         
         public string? mediaPath { get; set; }
 
