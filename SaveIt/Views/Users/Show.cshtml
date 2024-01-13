@@ -77,13 +77,15 @@
 }
 *@
 
-@foreach (Pin pin in ViewBag.SavedPins)
-{
-    <div class="col-12">
-        <div class="card text-white bg-dark mb-3" style="width: 100%;">
-            <div class="card-body">
-                @Html.Partial("PinInfo", pin)
+<div style="display: flex; flex-wrap: wrap;">
+    @foreach (Pin pin in ViewBag.SavedPins)
+    {
+        <div class="col-6">
+            <div class="card text-white bg-dark mb-3" style="width: 96%;">
+                <div class="card-body d-flex flex-row justify-content-center">
+                    @Html.Partial("PinInfo", pin)
+                </div>
             </div>
         </div>
-    </div>
-}
+    }
+</div>
