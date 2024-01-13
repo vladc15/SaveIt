@@ -119,6 +119,7 @@ namespace SaveIt.Controllers
                 }*/
 
                 var board = db.Boards.Include("User")
+                                 .Include (b => b.Comments)
                                  .Include("PinBoards.Pin.User")
                                  .Include("PinBoards.Pin.Likes")
                                  .Include("PinBoards.Pin.Comments")
