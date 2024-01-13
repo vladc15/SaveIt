@@ -19,9 +19,10 @@
 
             @if (Model.User != null)
             {
+                
                 <div class="text-info" style="margin-right: 15px">
                     <i class="bi bi-person"></i>
-                    @Model.User.UserName
+                    <a href="/Users/Show/@Model.UserId">@Model.User.UserName</a>
                 </div>
             }
 

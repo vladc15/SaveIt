@@ -60,7 +60,7 @@ namespace SaveIt.Controllers
         {
             SetAccessRights();
 
-            if (User.IsInRole("User"))
+            /*if (User.IsInRole("User"))
             {
                 var boards = db.Boards.Include("User")
                                       .Include(p => p.Comments)
@@ -114,6 +114,26 @@ namespace SaveIt.Controllers
                 else
                 {
                     TempData["message"] = "Nu aveti drept de accesare!";
+                    TempData["messageType"] = "alert-danger";
+                    return RedirectToAction("Index", "Pins");
+                }*/
+
+                var board = db.Boards.Include("User")
+                                 .Include("PinBoards.Pin.User")
+                                 .Include("PinBoards.Pin.Likes")
+                                 .Include("PinBoards.Pin.Comments")
+                                 .Include(pb => pb.PinBoards)
+                                 .ThenInclude(pb => pb.Pin)
+                                 .ThenInclude(pb => pb.PinTags)
+                                 .ThenInclude(pt => pt.Tag)
+                                 .FirstOrDefault(b => b.Id == id);
+                if (board != null)
+                {
+                    return View(board);
+                }
+                else
+                {
+                    TempData["message"] = "Nu exista board-ul!";
                     TempData["messageType"] = "alert-danger";
                     return RedirectToAction("Index", "Pins");
                 }
