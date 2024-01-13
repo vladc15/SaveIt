@@ -137,7 +137,7 @@ namespace SaveIt.Controllers
             }
         }
 
-        /*
+        
         [Authorize(Roles="User,Admin")]
         public IActionResult Edit(int id)
         {
@@ -152,9 +152,26 @@ namespace SaveIt.Controllers
                 TempData["messageType"] = "alert-danger";
                 return RedirectToAction("Index", "Pins");
             }
-        }*/
+        }
 
-        // TODO: edit
+        [Authorize(Roles ="User,Admin")]
+        [HttpPost]
+        public IActionResult Edit(int id, Board requestBoard)
+        {
+            if (ModelState.IsValid)
+            {
+                Board board = db.Boards.Find(id);
+                board.Name = requestBoard.Name;
+                db.SaveChanges();
+                TempData["message"] = "Board-ul a fost modificat!";
+                TempData["messageType"] = "alert-success";
+                return RedirectToAction("Index");
+            }
+            else
+            {
+                return View(requestBoard);
+            }
+        }
 
         // vreau sa pot scoate un pin din board si sa am buton de remove atunci cand am un board afisat
         [HttpPost]
