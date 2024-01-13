@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using NuGet.Versioning;
 using SaveIt.Data;
 using SaveIt.Models;
 
@@ -62,10 +63,13 @@ namespace SaveIt.Controllers
             if (User.IsInRole("User"))
             {
                 var boards = db.Boards.Include("User")
+                                      .Include(p => p.Comments)
+                                      .Include("Comments.User")
                                      .Include("PinBoards.Pin.User")
                                      .Include("PinBoards.Pin.Likes")
                                      .Include("PinBoards.Pin.Comments")
                                      .Include(pb => pb.PinBoards)
+                                   
                                      .ThenInclude(pb => pb.Pin)
                                      .ThenInclude(pb => pb.PinTags)
                                      .ThenInclude(pt => pt.Tag)
@@ -85,10 +89,13 @@ namespace SaveIt.Controllers
                 if (User.IsInRole("Admin"))
                 {
                     var boards = db.Boards.Include("User")
+                                          .Include(p => p.Comments)
+                                         .Include("Comments.User")
                                          .Include("PinBoards.Pin.User")
                                          .Include("PinBoards.Pin.Likes")
                                          .Include("PinBoards.Pin.Comments")
                                          .Include(pb => pb.PinBoards)
+                                         
                                          .ThenInclude(pb => pb.Pin)
                                          .ThenInclude(pb => pb.PinTags)
                                          .ThenInclude(pt => pt.Tag)
@@ -195,7 +202,7 @@ namespace SaveIt.Controllers
         
         public IActionResult Delete(int id)
         {
-            var board = db.Boards.Find(id);
+            var board = db.Boards.Include("Comments").Where(b => b.Id == id).First();
             if (board.UserId == _userManager.GetUserId(User) || User.IsInRole("Admin"))
             {
                 db.Boards.Remove(board);
@@ -217,6 +224,39 @@ namespace SaveIt.Controllers
         {
             ViewBag.EsteAdmin = User.IsInRole("Admin");
             ViewBag.UserCurent = _userManager.GetUserId(User);
+        }
+
+        [Authorize(Roles = "User,Admin")]
+        [HttpPost]
+        public IActionResult Show([FromForm] Comment comment)
+        {
+            comment.UserId = _userManager.GetUserId(User);
+            comment.Date = System.DateTime.Now;
+
+            if (ModelState.IsValid)
+            {
+                db.Comments.Add(comment);
+                db.SaveChanges();
+                return Redirect("/Boards/Show/" + comment.BoardId);
+            }
+            else
+            {
+                ViewBag.UserBoards = db.Boards.Where(b => b.UserId == _userManager.GetUserId(User)).ToList();
+                var board = db.Boards.Include("User")
+                                      .Include(p => p.Comments)
+                                      .Include("Comments.User")
+                                     .Include("PinBoards.Pin.User")
+                                     .Include("PinBoards.Pin.Likes")
+                                     .Include("PinBoards.Pin.Comments")
+                                     .Include(pb => pb.PinBoards)
+                                   
+                                     .ThenInclude(pb => pb.Pin)
+                                     .ThenInclude(pb => pb.PinTags)
+                                     .ThenInclude(pt => pt.Tag)
+                                     .Where(b => b.UserId == _userManager.GetUserId(User)).FirstOrDefault(b => b.Id == comment.BoardId);
+                SetAccessRights();
+                return View(board);
+            }
         }
     }
 }
