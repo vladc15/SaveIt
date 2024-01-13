@@ -316,6 +316,7 @@ namespace SaveIt.Controllers
                     return RedirectToAction("Index");
                 }
 
+                pin.PinTags.Clear();
 
                 foreach (var tagId in requestPin.TagIds)
                 {
@@ -345,7 +346,7 @@ namespace SaveIt.Controllers
                     pin.mediaType = "image";
                     pin.mediaPath = fileName;
                 }
-                else if (pin.mediaPath != requestPin.mediaPath)
+                else if (requestPin.mediaPath != null)
                 {
                     pin.mediaType = "video";
                     pin.mediaPath = requestPin.mediaPath;
@@ -360,7 +361,6 @@ namespace SaveIt.Controllers
                 pin.Title = requestPin.Title;
                 pin.Content = requestPin.Content;
                 pin.Date = DateTime.Now;
-                pin.PinTags.Clear();
                 pin.TagIds = requestPin.TagIds.ToList();
                 pin.Tags = GetAllTags();
 
