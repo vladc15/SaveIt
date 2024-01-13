@@ -57,7 +57,8 @@ erDiagram
         int Id PK
         string Title
         string Content
-        string PhotoPath
+        string mediaPath
+        string mediaType
         string UserId FK
         date Date
     }
