@@ -30,10 +30,10 @@
                 @Html.ValidationMessage("mediaPath", null, new { @class = "text-danger" })
                 <br />
 
-                <span>Fisier media curent: </span>
+                @Html.Label("Media preview: ", "Fisier media curent")
                 @if (Model.mediaType == "image")
                 {
-                    <img src="~/@Model.mediaPath" alt="bufnita" style="width: 70%">
+                    <img src="~/images/@Model.mediaPath" alt="bufnita" style="width: 70%">
                 }
                 else
                 {
