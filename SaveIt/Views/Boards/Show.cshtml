@@ -20,23 +20,76 @@
     @if (Model.PinBoards.Count > 0)
     {
         <div style="display: flex; flex-wrap: wrap;">
-            @foreach (var pinBoard in Model.PinBoards)
-            {
-                <div class="col-6">
-                    <div class="card text-white bg-dark mb-3" style="width: 96%;">
-                        <div class="card-body d-flex flex-row justify-content-center">
-                            @Html.Partial("PinInfo", pinBoard.Pin)
-                        </div>
-                        <div class="card-footer d-flex flex-row justify-content-center">
-                            <form method="post" asp-controller="Boards" asp-action="RemovePin">
-                                <input type="hidden" name="PinId" value="@pinBoard.Pin.Id" />
-                                <input type="hidden" name="BoardId" value="@pinBoard.Board.Id" />
-                                <button type="submit" class="btn btn-danger">Remove Pin</button>
-                            </form>
-                        </div>
+        @foreach (var pinBoard in Model.PinBoards)
+        {
+            <div class="col-6">
+                <div class="card text-white bg-dark mb-3" style="width: 96%;">
+                    <div class="card-body d-flex flex-row justify-content-center">
+                        @Html.Partial("PinInfo", pinBoard.Pin)
+                    </div>
+                    <div class="card-footer d-flex flex-row justify-content-center">
+                        <form method="post" asp-controller="Boards" asp-action="RemovePin">
+                            <input type="hidden" name="PinId" value="@pinBoard.Pin.Id" />
+                            <input type="hidden" name="BoardId" value="@pinBoard.Board.Id" />
+                            <button type="submit" class="btn btn-danger">Remove Pin</button>
+                        </form>
                     </div>
                 </div>
-            }
+            </div>
+        }
         </div>
     }
+
+    <br />
+<br />
+@foreach (var comm in Model.Comments)
+{
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12 text-center">
+                <div class="card text-white bg-dark mb-3">
+                    <div class="card-body">
+                        <p>@comm.Content</p>
+                        <small>@comm.Date</small>
+                        <strong><i class="bi bi-person"></i> @comm.User.UserName</strong>
+
+                        @if (comm.UserId == ViewBag.UserCurent || ViewBag.EsteAdmin)
+                        {
+                            <div class="d-flex justify-content-center mt-2">
+                                <a class="btn btn-outline-primary mr-2" href="/Comments/Edit/@comm.Id">
+                                    <i class="bi bi-pencil-square"></i> Editeaza
+                                </a>
+                                <form method="post" action="/Comments/Delete/@comm.Id">
+                                    <button class="btn btn-outline-danger" type="submit">
+                                        <i class="bi bi-trash"></i> Sterge
+                                    </button>
+                                </form>
+                            </div>
+                        }
+
+                        <br />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+<div class="container">
+    <div class="row">
+        <div class="col-md-12 text-center">
+            <div class="card text-white bg-dark mb-3">
+                <form method="post" action="/Boards/Show/@Model.Id">
+                    <div class="card-body">
+                        <input type="hidden" name="BoardId" value="@Model.Id" />
+                        <label class="text-light">Continut comentariu</label>
+                        <textarea class="form-control dark-textarea" name="Content"></textarea>
+                        @Html.ValidationMessage("Content", null, new { @class = "text-danger" })
+
+                        <button class="btn btn-success" type="submit">Adauga comentariul</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+        
 </div>
