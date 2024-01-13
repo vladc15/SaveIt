@@ -8,7 +8,7 @@ using SaveIt.Models;
 
 namespace SaveIt.Controllers
 {
-    [Authorize(Roles="Admin")]
+    
     public class UsersController : Controller
     {
         private readonly ApplicationDbContext db;
@@ -23,7 +23,7 @@ namespace SaveIt.Controllers
             _userManager = userManager;
             _roleManager = roleManager;
         }
-
+        [Authorize(Roles = "Admin")]
         public IActionResult Index()
         {
             if (TempData.ContainsKey("message"))
@@ -36,7 +36,7 @@ namespace SaveIt.Controllers
             ViewBag.UsersList = users;
             return View();
         }
-
+        [Authorize(Roles = "User,Admin")]
         public async Task<ActionResult> Show(string id)
         {
             /*ApplicationUser user = db.Users
@@ -70,7 +70,7 @@ namespace SaveIt.Controllers
             ViewBag.Roles = roles;
             return View(user);
         }
-
+        [Authorize(Roles = "Admin")]
         public async Task<ActionResult> Edit(string id)
         {
             ApplicationUser user = db.Users.Find(id);
@@ -85,6 +85,7 @@ namespace SaveIt.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         public async Task<ActionResult> Edit(string id, ApplicationUser newData, [FromForm] string newRole)
         {
             ApplicationUser user = db.Users.Find(id);
@@ -110,6 +111,7 @@ namespace SaveIt.Controllers
 
 
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         public IActionResult Delete(string id)
         {
             var user = db.Users.Include("Pins").Include("Boards").Include("Comments").FirstOrDefault(u => u.Id == id);
