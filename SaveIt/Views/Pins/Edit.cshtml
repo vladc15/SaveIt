@@ -10,8 +10,8 @@
 <div class="contaier mt-5">
     <div class="row">
         <div class="col-md-6 offset-3">
-            @using (Html.BeginForm(actionName: "Edit", controllerName: "Pins", method: FormMethod.Post))
-            {
+           
+           <form enctype="multipart/form-data" asp-controller="Pins" asp-action="Edit"> 
                 @Html.Label("Title", "Titlu Pin") <br />
                 @Html.Editor("Title", new { @class = "form-control" })
                 @Html.ValidationMessage("Title", null, new { @class = "text-danger" })
@@ -22,20 +22,23 @@
                 @Html.ValidationMessage("Content", null, new { @class = "text-danger" })
                 <br /> <br />
 
-                //<label>Selectati Tag-urile</label>
-                //@Html.DropDownListFor(m => m.TagId, new SelectList(Model.Tags, "Value", "Text"), "Selectati Tag-ul", new { @class = "form-control" })
-                //@Html.ValidationMessageFor(m => m.TagId, null, new {@class = "text-danger" })
-                //<br /> <br />
+                @Html.Label("Image", "Imagine") <br />
+                <input class="form-control" type="file" name="PinPhoto" />
+                <br />
+                @Html.Label("Link", "Link video") <br />
+                @Html.Editor("mediaPath", null, new { @class = "form-control" })
+                @Html.ValidationMessage("mediaPath", null, new { @class = "text-danger" })
+                <br />
 
-                /*<label>Selectati Tag-urile</label>
-                @Html.ListBoxFor(m => m.TagIds, new SelectList(Model.Tags, "Value", "Text"), new { @class = "form-control" })
-                @Html.ValidationMessageFor(m => m.TagIds, null, new { @class = "text-danger" })
-                <br /> <br />*/
-
-                //<label>Selectati Tag-urile</label>
-                //@Html.ListBoxFor(m => m.TagId, new SelectList(Model.Tags, "Value", "Text"), new { @class = "form-control" })
-                //@Html.ValidationMessageFor(m => m.TagId, null, new { @class = "text-danger" })
-                //<br /> <br />
+                <span>Fisier media curent: </span>
+                @if (Model.mediaType == "image")
+                {
+                    <img src="~/@Model.mediaPath" alt="bufnita" style="width: 70%">
+                }
+                else
+                {
+                    <iframe width="420" height="315" src="@Model.mediaPath"> </iframe>
+                }
 
                 <label>Selectati Tag-urile</label>
                 @Html.DropDownListFor(m => m.TagIds, new SelectList(Model.Tags, "Value", "Text", Model.TagIds), "Selectati Tag-ul", new { @class = "form-select", multiple="multiple", id="multiple-select-field", data_placeholder="Alege Tag-urile" })
@@ -45,7 +48,7 @@
 
                 <button class="btn btn-success" type="submit">Editeaza Pin</button>
 
-            }
+            </form>
         </div>
     </div>
 </div>

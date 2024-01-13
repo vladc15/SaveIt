@@ -303,7 +303,7 @@ namespace SaveIt.Controllers
 
         [Authorize(Roles = "User,Admin")]
         [HttpPost]
-        public IActionResult Edit(int id, Pin requestPin)
+        public async Task<IActionResult> Edit(int id, Pin requestPin, IFormFile? PinPhoto)
         {
             if (ModelState.IsValid)
             {
@@ -316,11 +316,6 @@ namespace SaveIt.Controllers
                     return RedirectToAction("Index");
                 }
 
-                pin.Title = requestPin.Title;
-                pin.Content = requestPin.Content;
-                pin.Date = DateTime.Now;
-                pin.PinTags.Clear();
-                pin.TagIds = requestPin.TagIds.ToList();
 
                 foreach (var tagId in requestPin.TagIds)
                 {
@@ -332,6 +327,43 @@ namespace SaveIt.Controllers
                     db.PinTags.Add(pinTag);
                     pin.PinTags.Add(pinTag);
                 }
+                if (PinPhoto != null)
+                {
+                    if (pin.mediaPath != requestPin.mediaPath)
+                    {
+                        pin.Tags = GetAllTags();
+                        ModelState.AddModelError("mediaPath", "Nu puteti adauga o imagine si un link " +
+                                                       "pentru video in acelasi timp!");
+                        return View(pin);
+                    }
+                    var fileName = Path.GetFileName(PinPhoto.FileName);
+                    var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\images", fileName);
+                    using (var fileSteam = new FileStream(filePath, FileMode.Create))
+                    {
+                        await PinPhoto.CopyToAsync(fileSteam);
+                    }
+                    pin.mediaType = "image";
+                    pin.mediaPath = fileName;
+                }
+                else if (pin.mediaPath != requestPin.mediaPath)
+                {
+                    pin.mediaType = "video";
+                    pin.mediaPath = requestPin.mediaPath;
+                }
+                else
+                {
+                    pin.Tags = GetAllTags();
+                    ModelState.AddModelError("mediaPath", "Trebuie sa adaugati o imagine sau un link pentru video!");
+                    return View(pin);
+                }
+
+                pin.Title = requestPin.Title;
+                pin.Content = requestPin.Content;
+                pin.Date = DateTime.Now;
+                pin.PinTags.Clear();
+                pin.TagIds = requestPin.TagIds.ToList();
+                pin.Tags = GetAllTags();
+
                 db.SaveChanges();
                 TempData["message"] = "Pin-ul a fost modificat!";
                 TempData["messageType"] = "alert-success";
